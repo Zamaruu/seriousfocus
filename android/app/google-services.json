@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "206757581569",
+    "project_id": "seriousfocus-d4d8e",
+    "storage_bucket": "seriousfocus-d4d8e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:206757581569:android:8d2ef6bdf768391cdfc100",
+        "android_client_info": {
+          "package_name": "com.zamaruu.seriousfocus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "206757581569-3t1bm9dqkm2tq2holk1488n5oc4huqj8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.zamaruu.seriousfocus",
+            "certificate_hash": "63e292a152eba1a72df255c0ec01b97d43700ffa"
+          }
+        },
+        {
+          "client_id": "206757581569-asrv1v8cb7ur45a0k56j39qdsu59n8ag.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKwQT5_NXPJslmnFFdiM_7npJ5EG6skT8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "206757581569-asrv1v8cb7ur45a0k56j39qdsu59n8ag.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
