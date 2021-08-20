@@ -15,6 +15,7 @@ class SeriousFocusAppBar extends StatelessWidget  {
         ),
       ),
       backgroundColor: Colors.white,
+      elevation: 0,
     );
   }
 }

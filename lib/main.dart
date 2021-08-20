@@ -28,7 +28,7 @@ class SeriousFocusBase extends StatelessWidget {
           primaryColor: Colors.purple,
           textTheme: GoogleFonts.poppinsTextTheme(
             Theme.of(context).textTheme
-          )
+          ),
         ),
         home: AuthenticationWrapper(),
         //home: SeriousFocusMainNavigationPage(),
@@ -42,26 +42,28 @@ class AuthenticationWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<User?>(
-      stream: FirebaseAuth.instance.authStateChanges(),
-      builder: (context, snapshot){
-        if(snapshot.connectionState == ConnectionState.waiting){
-          return Center(
-            child:  CircularProgressIndicator(color: Colors.purple,),
-          );
+    return Scaffold(
+      body: StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot){
+          if(snapshot.connectionState == ConnectionState.waiting){
+            return Center(
+              child:  CircularProgressIndicator(color: Colors.purple,),
+            );
+          }
+          else if(snapshot.hasData){
+            return SeriousFocusMainNavigationPage();
+          }
+          else if(snapshot.hasError){
+            return Center(
+              child: Text(snapshot.error.toString()),
+            );
+          }
+          else{
+            return LoginPage();
+          }
         }
-        else if(snapshot.hasData){
-          return SeriousFocusMainNavigationPage();
-        }
-        else if(snapshot.hasError){
-          return Center(
-            child: Text(snapshot.error.toString()),
-          );
-        }
-        else{
-          return LoginPage();
-        }
-      }
+      ),
     );
     
     //print("Current user: " + firebaseUser.toString());

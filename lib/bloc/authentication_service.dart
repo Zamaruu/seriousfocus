@@ -7,19 +7,22 @@ class AuthenticationService extends ChangeNotifier {
   AuthenticationService();
 
   Future<String> googleSignIn() async {
-    final googleUser = await GoogleSignIn().signIn();
-    
-    if(googleUser != null){
-      final googleAuth = await googleUser.authentication;
-      final credential = GoogleAuthProvider.credential(accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
-      await FirebaseAuth.instance.signInWithCredential(credential);
-      notifyListeners();
-      return "200";
-    }
-    else{
-      return "400";
-    }
+    try {
+      final googleUser = await GoogleSignIn().signIn();
 
+      if (googleUser != null) {
+        final googleAuth = await googleUser.authentication;
+        final credential = GoogleAuthProvider.credential(
+            accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
+        await FirebaseAuth.instance.signInWithCredential(credential);
+        notifyListeners();
+        return "200";
+      } else {
+        return "400";
+      }
+    } catch (e) {
+      return e.toString();
+    }
   }
 
   Future<String> signIn({required String email, required String password}) async {
