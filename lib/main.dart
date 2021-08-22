@@ -25,6 +25,7 @@ class SeriousFocusBase extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
+          primarySwatch: Colors.purple,
           primaryColor: Colors.purple,
           textTheme: GoogleFonts.poppinsTextTheme(
             Theme.of(context).textTheme

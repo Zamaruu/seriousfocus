@@ -38,6 +38,10 @@ dependencies:
   url_launcher: ^6.0.9
   firebase_storage: ^10.0.2
   file_picker: ^4.0.0
+  flip_card: ^0.5.0
+  sqflite: ^2.0.0+3
+  animations: ^2.0.1
+  flutter_colorpicker: ^0.5.0
 
 dev_dependencies:
   flutter_test:

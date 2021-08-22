@@ -6,13 +6,15 @@ class SeriousFocusScaffold extends StatelessWidget {
   final bool showAppBar;
   final String title;
   final Widget? bottomNavigationBar;
-
+  final List<Widget>? actions;
+  
   const SeriousFocusScaffold({
     Key? key, 
     this.body, 
     this.title = "", 
     this.bottomNavigationBar, 
-    this.showAppBar = false,
+    this.showAppBar = false, 
+    this.actions,
   }) : super(key: key);
 
   @override
@@ -20,7 +22,7 @@ class SeriousFocusScaffold extends StatelessWidget {
     return Scaffold(
       appBar: showAppBar? PreferredSize(
         preferredSize: const Size.fromHeight(50),
-        child: SeriousFocusAppBar(title: title,)
+        child: SeriousFocusAppBar(title: title, actions: actions,)
       ): null,
       body: body,
       bottomNavigationBar: bottomNavigationBar,
