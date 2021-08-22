@@ -22,7 +22,7 @@ class _SeriousFocusMainNavigationPageState extends State<SeriousFocusMainNavigat
   @override
   void initState() {
     super.initState();
-    _pageindex = 0;
+    _pageindex = 2;
   }
 
   final List<Widget> _mainpages = [
@@ -38,6 +38,7 @@ class _SeriousFocusMainNavigationPageState extends State<SeriousFocusMainNavigat
     return SeriousFocusScaffold(
       body: _mainpages[_pageindex],
       bottomNavigationBar: CurvedNavigationBar(
+        index: _pageindex,
         color: Colors.purple,
         backgroundColor: Colors.white,
         items: <Icon>[

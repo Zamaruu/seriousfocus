@@ -51,7 +51,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
     return Row(
       children: [
         Text(
-          "Neue Kategorie erstellen",
+          "Neues Fachgebiet erstellen",
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold
@@ -61,7 +61,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
         IconButton(
           onPressed: () => Navigator.of(context).pop(), 
           icon: Icon(Icons.clear),
-          splashRadius: Global().splashRadius,
+          splashRadius: Global.splashRadius,
           color: Colors.purple,
         ),
       ],
@@ -74,14 +74,14 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         SeriousFocusButton(
-          margin: EdgeInsets.only(left: Global().appMargin / 2),
+          margin: EdgeInsets.only(left: Global.appMargin / 2),
           icon: Icons.clear, 
           text: "Abbrechen", 
           onPressed: () => Navigator.of(context).pop(), 
           backgoundColor: Colors.grey,
         ),
         SeriousFocusButton(
-          margin: EdgeInsets.only(left: Global().appMargin / 2),
+          margin: EdgeInsets.only(left: Global.appMargin / 2),
           icon: Icons.create, 
           text: "Erstellen", 
           onPressed: (){},
@@ -110,7 +110,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                 backgroundColor: _categoryColor,
               ),
               SeriousFocusButton(
-                margin: EdgeInsets.only(left: Global().appMargin / 2),
+                margin: EdgeInsets.only(left: Global.appMargin / 2),
                 icon: Icons.color_lens,
                 backgoundColor: _categoryColor,
                 text: "Farbe auswählen",
@@ -125,14 +125,14 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(left: Global().appPadding, right: Global().appPadding, bottom: Global().appPadding * 2),
+    return Container(
+      margin: EdgeInsets.only(left: Global.appPadding / 2, right: Global.appPadding / 2, bottom: Global.appPadding * 2),
       child: Material(
         color: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
-        elevation: 6.0,
+        elevation: 10.0,
         child: Container(
-          padding: EdgeInsets.all(Global().appPadding),
+          padding: EdgeInsets.all(Global.appPadding),
           width: MediaQuery.of(context).size.width,
           height: 300,
           child: GestureDetector(

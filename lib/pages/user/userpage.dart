@@ -34,7 +34,7 @@ class _UserpageState extends State<Userpage> {
         color: Colors.white,
         child: Container(
           //color: Colors.white,
-          padding: EdgeInsets.only(left: Global().appPadding, top: Global().appPadding),
+          padding: EdgeInsets.only(left: Global.appPadding, top: Global.appPadding),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,7 +52,7 @@ class _UserpageState extends State<Userpage> {
                 ),
               if(user.photoURL == null)
                 UserDataTile(
-                  margin: EdgeInsets.only(top: Global().appMargin),
+                  margin: EdgeInsets.only(top: Global.appMargin),
                   icon: Icons.cloud_upload,
                   title: "Bild hochladen",
                   onTap: () async {
@@ -71,13 +71,13 @@ class _UserpageState extends State<Userpage> {
               if(user.displayName != null)
                 if(user.displayName!.isNotEmpty)
                   UserDataTile(
-                    margin: EdgeInsets.only(top: Global().appMargin),
+                    margin: EdgeInsets.only(top: Global.appMargin),
                     icon: FontAwesomeIcons.signature, 
                     title: user.displayName!, 
                     onTap: (){},
                   ),
               UserDataTile(
-                margin: user.photoURL != null? EdgeInsets.only(top: Global().appMargin): EdgeInsets.zero,
+                margin: user.photoURL != null? EdgeInsets.only(top: Global.appMargin): EdgeInsets.zero,
                 icon: FontAwesomeIcons.envelope,
                 title: user.email!,
                 onTap: () {
