@@ -55,6 +55,13 @@ class AuthenticationService extends ChangeNotifier {
   }
 
   Future logout() async {
-    FirebaseAuth.instance.signOut();
+    await FirebaseAuth.instance.signOut();
+  }
+
+  Future deleteAccount() async {
+    final User? currentUser = FirebaseAuth.instance.currentUser;
+    await FirebaseFirestore.instance.collection("User").doc(currentUser!.uid).delete();
+    await currentUser.delete();
+    await FirebaseAuth.instance.signOut();
   }
 }

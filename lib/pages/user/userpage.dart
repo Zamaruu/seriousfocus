@@ -9,6 +9,7 @@ import 'package:seriousfocus/bloc/firebase_user_service.dart';
 import 'package:seriousfocus/globals.dart';
 import 'package:seriousfocus/widgets/global/seriousfocus_scaffold.dart';
 import 'package:provider/provider.dart';
+import 'package:seriousfocus/widgets/global/seriousfocus_textbutton.dart';
 import 'package:seriousfocus/widgets/user/userdatatile.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -20,9 +21,43 @@ class Userpage extends StatefulWidget {
 }
 
 class _UserpageState extends State<Userpage> {
+
+  //Methods
   void _launchURL(_url) async => await canLaunch(_url)
       ? await launch(_url)
       : throw 'Could not launch $_url';
+
+  Future<dynamic> _deleteAccountDialog(BuildContext context){
+    return showDialog(
+      context: context, 
+      builder: (BuildContext context){
+        return AlertDialog(
+          title: const Text('Konto löschen'),
+          content: Container(
+            child: Text(
+              "Möchten Sie wirkliche Ihr Konto unwiderruflich löschen?"
+            ),
+          ),
+          actions: <Widget>[
+            SeriousFocusTextButton(
+              icon: Icons.arrow_back, 
+              text: "Abbrechen",
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            SeriousFocusTextButton(
+              icon: Icons.delete,
+              backgoundColor: Colors.red,
+              contentColor:  Colors.red, 
+              text: "Konto löschen",
+              onPressed: () => context.read<AuthenticationService>().deleteAccount(),
+            ),
+          ],
+        );
+      }
+    );
+  }
+
+  //Widgtes
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +106,7 @@ class _UserpageState extends State<Userpage> {
               if(user.displayName != null)
                 if(user.displayName!.isNotEmpty)
                   UserDataTile(
-                    margin: EdgeInsets.only(top: Global.appMargin),
+                    //margin: EdgeInsets.only(top: Global.appMargin),
                     icon: FontAwesomeIcons.signature, 
                     title: user.displayName!, 
                     onTap: (){},
@@ -101,6 +136,11 @@ class _UserpageState extends State<Userpage> {
                     }
                   },
                 ),
+              UserDataTile(
+                icon: Icons.delete,
+                title: "Konto löschen",
+                onTap: () => _deleteAccountDialog(context),
+              ),
               UserDataTile(
                 icon: FontAwesomeIcons.signOutAlt,
                 title: "Abmelden",
