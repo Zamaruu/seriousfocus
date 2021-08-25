@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:seriousfocus/pages/authentication/loginselection.dart';
-import 'package:seriousfocus/pages/authentication/signinsection.dart';
+import 'package:seriousfocus/pages/authentication/signin_section.dart';
+import 'package:seriousfocus/pages/authentication/signup_section.dart';
 import 'package:seriousfocus/widgets/global/seriousfocus_scaffold.dart';
 
 class LoginPage extends StatefulWidget {
@@ -32,6 +33,7 @@ class _LoginPageState extends State<LoginPage> {
       children: [
         LoginSelection(stackCallBack: setStackIndex,),
         SignInSection(stackCallBack: setStackIndex,),
+        SignUpSection(stackCallBack: setStackIndex,)
       ],
     );
   }

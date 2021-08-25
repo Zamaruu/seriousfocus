@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -34,9 +36,18 @@ class AuthenticationService extends ChangeNotifier {
     }
   }
 
-  Future<String> signUp({required String email, required String password}) async {
+  Future<String> signUp({required String email, required String password, required String username}) async {
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
+      UserCredential newUser = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
+      await newUser.user!.updateDisplayName(username);
+      FirebaseFirestore.instance.collection("User").doc(newUser.user!.uid).set(
+        {
+          "uid": newUser.user!.uid,
+          "email": email,
+          "username": username,
+        }
+      );
+      //signIn(email: email, password: password);
       return "200";
     } on FirebaseAuthException catch (e) {
       return e.message!;

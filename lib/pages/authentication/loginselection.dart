@@ -45,7 +45,7 @@ class LoginSelection extends StatelessWidget {
             icon: FontAwesomeIcons.google, 
             backgroundColor: 
             Colors.red, 
-            onPressed: () => context.read<AuthenticationService>().googleSignIn(),
+            //onPressed: () => context.read<AuthenticationService>().googleSignIn(),
           ),
           Container(
             margin: EdgeInsets.symmetric(vertical: 50),
@@ -60,7 +60,12 @@ class LoginSelection extends StatelessWidget {
               ),
             ),
           ),
-          AuthButton(text: "Konto erstellen", icon: Icons.person_add, backgroundColor: Colors.grey,),
+          AuthButton(
+            text: "Konto erstellen", 
+            icon: Icons.person_add, 
+            backgroundColor: Colors.grey,
+            onPressed: () => stackCallBack(2),
+          ),
         ],
       ),
     );
