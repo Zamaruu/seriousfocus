@@ -35,7 +35,7 @@ class _UserpageState extends State<Userpage> {
           title: const Text('Konto löschen'),
           content: Container(
             child: Text(
-              "Möchten Sie wirkliche Ihr Konto unwiderruflich löschen?"
+              "Möchten Sie wirklich Ihr Konto unwiderruflich löschen?"
             ),
           ),
           actions: <Widget>[

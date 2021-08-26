@@ -8,13 +8,15 @@ import 'package:seriousfocus/widgets/global/seriousfocus_textbutton.dart';
 class LearningCategoryCard extends StatelessWidget {
   final double height;
   final Function? onPressed;
+  final Function refreshCallback;
   final LearningCategoryModel model;
 
   LearningCategoryCard({
     Key? key, 
     this.height = 154.0, 
     this.onPressed, 
-    required this.model 
+    required this.model, 
+    required this.refreshCallback 
   }) : super(key: key);
 
   //Methods
@@ -23,6 +25,8 @@ class LearningCategoryCard extends StatelessWidget {
       context, 
       onPressed: () async {
         await LearningService().deleteCategory(model.documentID!);
+        refreshCallback();
+        Navigator.of(context).pop();
       },
       title: "Kategorie löschen", 
       content: "Wollen Sie die Kategorie\n'${model.name}' wirklich löschen?", 
@@ -31,6 +35,7 @@ class LearningCategoryCard extends StatelessWidget {
   }
 
   //Widgets
+  //TODO: https://stackoverflow.com/questions/61289182/how-to-get-first-character-from-words-in-flutter-dart
   Row _header(){
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,

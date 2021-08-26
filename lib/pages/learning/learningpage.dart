@@ -73,7 +73,7 @@ class _LearningpageState extends State<Learningpage> {
                   itemCount: snapshot.data!.length,
                   padding: EdgeInsets.only(bottom: Global.appPadding * 2),
                   itemBuilder: (context, index){
-                    return LearningCategoryCard(model: snapshot.data![index]);
+                    return LearningCategoryCard(model: snapshot.data![index], refreshCallback: refreshPage,);
                   }
                 ),
               );
