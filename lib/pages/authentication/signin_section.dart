@@ -28,6 +28,7 @@ class SignInSection extends StatelessWidget {
                       margin: EdgeInsets.only(top: 15),
                       child: TextFormField(
                         controller: _emailController,
+                        keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
                           labelText: "E-Mail",
                           focusColor: Colors.purple,

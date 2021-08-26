@@ -1,20 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:seriousfocus/bloc/learning_category_model.dart';
+import 'package:seriousfocus/bloc/learning_firebase_service.dart';
 import 'package:seriousfocus/globals.dart';
 import 'package:seriousfocus/widgets/global/seriousfocus_textbutton.dart';
 
 class LearningCategoryCard extends StatelessWidget {
   final double height;
   final Function? onPressed;
-  final LearningCategoryModel categoryData;
+  final LearningCategoryModel model;
 
   LearningCategoryCard({
     Key? key, 
     this.height = 154.0, 
     this.onPressed, 
-    required this.categoryData 
+    required this.model 
   }) : super(key: key);
+
+  //Methods
+  Future<void> _deleteCategory(BuildContext context){
+    return Global.seriousFocusAlert(
+      context, 
+      onPressed: () async {
+        await LearningService().deleteCategory(model.documentID!);
+      },
+      title: "Kategorie löschen", 
+      content: "Wollen Sie die Kategorie\n'${model.name}' wirklich löschen?", 
+      onPressedText: "Löschen",
+    );
+  }
 
   //Widgets
   Row _header(){
@@ -23,11 +37,11 @@ class LearningCategoryCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         CircleAvatar(
-          backgroundColor: categoryData.categoryColor,
+          backgroundColor: model.categoryColor,
           child: Text(
-            categoryData.name.trim()[0].toUpperCase(),
+            model.name.trim()[0].toUpperCase(),
             style: TextStyle(
-              color: categoryData.categoryColor.computeLuminance() > 0.5 ? Colors.black: Colors.white,
+              color: model.categoryColor.computeLuminance() > 0.5 ? Colors.black: Colors.white,
               fontWeight: FontWeight.bold,
               fontSize: 20
             ),
@@ -36,9 +50,9 @@ class LearningCategoryCard extends StatelessWidget {
         Container(
           margin: EdgeInsets.only(left: Global.appMargin),
           child: Text(
-            categoryData.name,
+            model.name,
             style: TextStyle(
-              color: categoryData.categoryColor,
+              color: model.categoryColor,
               fontWeight: FontWeight.bold,
               fontSize: 17
             ),
@@ -48,13 +62,13 @@ class LearningCategoryCard extends StatelessWidget {
     );
   }
 
-  Row _actions(){
+  Row _actions(BuildContext context){
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         IconButton(
-          onPressed: (){},
+          onPressed: () => _deleteCategory(context),
           icon: FaIcon(Icons.delete),
           splashRadius: Global.splashRadius,
           color: Colors.purple,
@@ -89,7 +103,7 @@ class LearningCategoryCard extends StatelessWidget {
         elevation: 4,
         child: InkWell(
           onTap: (){},
-          splashColor: categoryData.categoryColor.withOpacity(0.3),
+          splashColor: model.categoryColor.withOpacity(0.3),
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(Global.borderRadius / 2),
@@ -110,17 +124,17 @@ class LearningCategoryCard extends StatelessWidget {
                   margin: EdgeInsets.only(top: Global.appMargin),
                   child: RichText(
                     text: TextSpan(
-                      text: '${categoryData.childrenCount} ',
+                      text: model.childrenCount.toString(),
                       style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
                       children: <TextSpan>[
-                        TextSpan(text: 'Elemente in diesem Gebiet!', style: DefaultTextStyle.of(context).style),
+                        TextSpan(text: ' Elemente in diesem Gebiet!', style: DefaultTextStyle.of(context).style),
                       ],
                     ),
                   ),
                   //child: Text("${categoryData.childrenCount} Elemente in diesem Gebiet!"),
                 ),
                 Spacer(),
-                _actions(),
+                _actions(context),
               ],
             ),
           ),

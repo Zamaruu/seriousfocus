@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:seriousfocus/bloc/learning_category_model.dart';
+import 'package:seriousfocus/bloc/learning_firebase_service.dart';
 import 'package:seriousfocus/globals.dart';
+import 'package:seriousfocus/pages/learning/learning_category_card.dart';
 import 'package:seriousfocus/widgets/global/seriousfocus_button.dart';
 
 class AddCategoryPage extends StatefulWidget {
-  const AddCategoryPage({ Key? key }) : super(key: key);
+  final Function refreshCallback;
+
+  const AddCategoryPage({
+    Key? key, 
+    required this.refreshCallback 
+  }) : super(key: key);
 
   @override
   _AddCategoryPageState createState() => _AddCategoryPageState();
@@ -84,7 +92,16 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
           margin: EdgeInsets.only(left: Global.appMargin / 2),
           icon: Icons.create, 
           text: "Erstellen", 
-          onPressed: (){},
+          onPressed: () async {
+            await LearningService().createNewCategory(
+              new LearningCategoryModel(
+                _categoryColor, 
+                _nameController.text.trim()
+              ),
+            );
+            widget.refreshCallback();
+            Navigator.of(context).pop();
+          },
         )
       ],
     );
@@ -98,6 +115,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
         children: [
           TextFormField(
             maxLength: 30,
+            controller: _nameController,
             decoration: InputDecoration(
               labelText: "Kategoriename",
             ),
