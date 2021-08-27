@@ -36,23 +36,31 @@ class _SeriousFocusMainNavigationPageState extends State<SeriousFocusMainNavigat
   @override
   Widget build(BuildContext context) {
     return SeriousFocusScaffold(
-      body: _mainpages[_pageindex],
-      bottomNavigationBar: CurvedNavigationBar(
-        index: _pageindex,
-        color: Colors.purple,
-        backgroundColor: Colors.white,
-        items: <Icon>[
-          Icon(Icons.home, size: iconSize, color: iconColor,),
-          Icon(Icons.forum, size: iconSize, color: iconColor,),
-          Icon(Icons.dashboard_rounded, size: iconSize, color: iconColor,),
-          Icon(Icons.checklist, size: iconSize, color: iconColor,),
-          Icon(Icons.person, size: iconSize, color: iconColor,),
+      body: Stack(
+        children: [
+          _mainpages[_pageindex],
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: CurvedNavigationBar(
+              index: _pageindex,
+              height: 50.0,
+              color: Colors.purple,
+              backgroundColor: Colors.transparent,
+              items: <Icon>[
+                Icon(Icons.home, size: iconSize, color: iconColor,),
+                Icon(Icons.forum, size: iconSize, color: iconColor,),
+                Icon(Icons.dashboard_rounded, size: iconSize, color: iconColor,),
+                Icon(Icons.checklist, size: iconSize, color: iconColor,),
+                Icon(Icons.person, size: iconSize, color: iconColor,),
+              ],
+              onTap: (index) {
+                setState(() {
+                  _pageindex = index;
+                });
+              },
+            ),
+          )
         ],
-        onTap: (index) {
-          setState(() {
-            _pageindex = index;
-          });
-        },
       ),
     );
   }
