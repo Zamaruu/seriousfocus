@@ -4,7 +4,7 @@ import 'package:seriousfocus/bloc/learning_category_model.dart';
 import 'package:seriousfocus/bloc/learning_firebase_service.dart';
 import 'package:seriousfocus/globals.dart';
 import 'package:seriousfocus/pages/learning/edit_category_partial.dart';
-import 'package:seriousfocus/widgets/global/seriousfocus_textbutton.dart';
+import 'package:seriousfocus/pages/learning/learning_category_page.dart';
 import 'package:side_sheet/side_sheet.dart';
 
 class LearningCategoryCard extends StatelessWidget {
@@ -13,51 +13,57 @@ class LearningCategoryCard extends StatelessWidget {
   final Function refreshCallback;
   final LearningCategoryModel model;
 
-  LearningCategoryCard({
-    Key? key, 
-    this.height = 154.0, 
-    this.onPressed, 
-    required this.model, 
-    required this.refreshCallback 
-  }) : super(key: key);
+  LearningCategoryCard(
+      {Key? key,
+      this.height = 154.0,
+      this.onPressed,
+      required this.model,
+      required this.refreshCallback})
+      : super(key: key);
 
   //Methods
-  Future<void> _deleteCategory(BuildContext context){
+  Future<void> _deleteCategory(BuildContext context) {
     return Global.seriousFocusAlert(
-      context, 
+      context,
       onPressed: () async {
         await LearningService().deleteCategory(model.documentID!);
         refreshCallback();
         Navigator.of(context).pop();
       },
-      title: "Kategorie löschen", 
-      content: "Wollen Sie die Kategorie\n'${model.name}' wirklich löschen?", 
+      title: "Kategorie löschen",
+      content: "Wollen Sie die Kategorie\n'${model.name}' wirklich löschen?",
       onPressedText: "Kategorie löschen",
     );
   }
 
-  void _editCategory(BuildContext context){
+  void _editCategory(BuildContext context) {
     SideSheet.right(
       context: context,
-      body: EditCategoryPartial(
-        refreshCallback: refreshCallback, 
-        model: model
-      ), 
+      body: EditCategoryPartial(refreshCallback: refreshCallback, model: model),
     );
     // showBottomSheet(
-    //   context: context, 
+    //   context: context,
     //   builder: (BuildContext context){
     //     return EditCategoryPartial(
-    //       refreshCallback: refreshCallback, 
+    //       refreshCallback: refreshCallback,
     //       model: model
     //     );
     //   }
     // );
   }
 
+  void _navigateToCategory(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => LearningCategoryPage(model: model),
+      ),
+    );
+  }
+
   //Widgets
   //TODO: https://stackoverflow.com/questions/61289182/how-to-get-first-character-from-words-in-flutter-dart
-  Row _header(){
+  Row _header() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -67,10 +73,11 @@ class LearningCategoryCard extends StatelessWidget {
           child: Text(
             model.name.trim()[0].toUpperCase(),
             style: TextStyle(
-              color: model.categoryColor.computeLuminance() > 0.5 ? Colors.black: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 20
-            ),
+                color: model.categoryColor.computeLuminance() > 0.5
+                    ? Colors.black
+                    : Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 20),
           ),
         ),
         Container(
@@ -78,17 +85,16 @@ class LearningCategoryCard extends StatelessWidget {
           child: Text(
             model.name,
             style: TextStyle(
-              color: model.categoryColor,
-              fontWeight: FontWeight.bold,
-              fontSize: 17
-            ),
+                color: model.categoryColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 17),
           ),
         ),
       ],
     );
   }
 
-  Row _actions(BuildContext context){
+  Row _actions(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -128,7 +134,7 @@ class LearningCategoryCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(Global.borderRadius / 2),
         elevation: 4,
         child: InkWell(
-          onTap: (){},
+          onTap: () => _navigateToCategory(context),
           splashColor: model.categoryColor.withOpacity(0.3),
           child: Container(
             decoration: BoxDecoration(
@@ -151,9 +157,12 @@ class LearningCategoryCard extends StatelessWidget {
                   child: RichText(
                     text: TextSpan(
                       text: model.childrenCount.toString(),
-                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.black),
                       children: <TextSpan>[
-                        TextSpan(text: ' Elemente in diesem Gebiet!', style: DefaultTextStyle.of(context).style),
+                        TextSpan(
+                            text: ' Elemente in diesem Gebiet!',
+                            style: DefaultTextStyle.of(context).style),
                       ],
                     ),
                   ),
