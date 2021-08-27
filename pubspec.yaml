@@ -45,6 +45,7 @@ dependencies:
   cloud_firestore: ^2.5.0
   lottie: ^1.1.0
   side_sheet: ^1.0.0
+  circular_menu: ^1.2.3
 
 dev_dependencies:
   flutter_test:

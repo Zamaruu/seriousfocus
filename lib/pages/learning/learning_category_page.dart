@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:seriousfocus/bloc/learning_category_model.dart';
 import 'package:seriousfocus/bloc/learning_firebase_service.dart';
 import 'package:seriousfocus/widgets/global/seriousfocus_scaffold.dart';
+import 'package:seriousfocus/widgets/learning/learning_category_fab.dart';
 
 class LearningCategoryPage extends StatelessWidget {
   final LearningCategoryModel model;
@@ -26,6 +27,7 @@ class LearningCategoryPage extends StatelessWidget {
       title: model.name,
       showAppBar: true,
       body: _body(),
+      fab: LearningcategoryMenu(),
     );
   }
 }
