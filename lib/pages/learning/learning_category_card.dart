@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:seriousfocus/bloc/learning_category_model.dart';
 import 'package:seriousfocus/bloc/learning_firebase_service.dart';
 import 'package:seriousfocus/globals.dart';
+import 'package:seriousfocus/pages/learning/edit_category_partial.dart';
 import 'package:seriousfocus/widgets/global/seriousfocus_textbutton.dart';
 
 class LearningCategoryCard extends StatelessWidget {
@@ -30,7 +31,19 @@ class LearningCategoryCard extends StatelessWidget {
       },
       title: "Kategorie löschen", 
       content: "Wollen Sie die Kategorie\n'${model.name}' wirklich löschen?", 
-      onPressedText: "Löschen",
+      onPressedText: "Kategorie löschen",
+    );
+  }
+
+  void _editCategory(BuildContext context){
+    showBottomSheet(
+      context: context, 
+      builder: (BuildContext context){
+        return EditCategoryPartial(
+          refreshCallback: refreshCallback, 
+          model: model
+        );
+      }
     );
   }
 
@@ -79,7 +92,7 @@ class LearningCategoryCard extends StatelessWidget {
           color: Colors.purple,
         ),
         IconButton(
-          onPressed: () {},
+          onPressed: () => _editCategory(context),
           icon: FaIcon(Icons.edit),
           splashRadius: Global.splashRadius,
           color: Colors.purple,

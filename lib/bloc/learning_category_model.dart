@@ -13,6 +13,12 @@ class LearningCategoryModel {
   //Constructor
   LearningCategoryModel(this._categoryColor, this._name);
 
+  LearningCategoryModel.edit(
+    this._documentID,
+    this._categoryColor,
+    this._name,
+  );
+
   LearningCategoryModel.formFirebase(
     this._documentID,
     this._childrenCount,

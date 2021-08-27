@@ -38,16 +38,30 @@ class LearningService {
   }
 
   createNewCategory(LearningCategoryModel model) async{
-    var res = await FirebaseFirestore.instance.collection(_collection).doc(_uid).collection("myCategories").add(model.toMap());
+    var res = await FirebaseFirestore.instance
+      .collection(_collection)
+      .doc(_uid)
+      .collection("myCategories")
+      .add(model.toMap());
     print(res);
   }
 
-  editCategory(){
-
+  editCategory(LearningCategoryModel model) async {
+    await FirebaseFirestore.instance
+      .collection(_collection)
+      .doc(_uid)
+      .collection("myCategories")
+      .doc(model.documentID)
+      .update(model.toMap());
   }
 
-  Future deleteCategory(String documentID) async{
-    await FirebaseFirestore.instance.collection(_collection).doc(_uid).collection("myCategories").doc(documentID).delete();
+  Future deleteCategory(String categoryID) async{
+    await FirebaseFirestore.instance
+      .collection(_collection)
+      .doc(_uid)
+      .collection("myCategories")
+      .doc(categoryID)
+      .delete();
   }
 
   //Flipcard methods
