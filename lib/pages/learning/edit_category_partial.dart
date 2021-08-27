@@ -72,9 +72,14 @@ class _EditCategoryPartialState extends State<EditCategoryPartial> {
   Row _header(BuildContext context) {
     return Row(
       children: [
-        Text(
-          "${widget.model.name} bearbeiten",
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        Icon(Icons.edit, color: Theme.of(context).primaryColor,),
+        Container(
+          margin: EdgeInsets.only(left: Global.appMargin / 2),
+          child: Text(
+            "${widget.model.name}",
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
         Spacer(),
         IconButton(
