@@ -6,6 +6,7 @@ import 'package:seriousfocus/globals.dart';
 import 'package:seriousfocus/pages/learning/add_category_partial.dart';
 import 'package:seriousfocus/pages/learning/learning_category_card.dart';
 import 'package:seriousfocus/widgets/global/seriousfocus_scaffold.dart';
+import 'package:side_sheet/side_sheet.dart';
 
 class Learningpage extends StatefulWidget {
   Learningpage({Key? key}) : super(key: key);
@@ -16,13 +17,19 @@ class Learningpage extends StatefulWidget {
 
 class _LearningpageState extends State<Learningpage> {
   void createNewCategory(BuildContext context){
-    showBottomSheet(
+    SideSheet.right(
       context: context,
-      backgroundColor: Colors.transparent,
-      builder: (BuildContext context){
-        return AddCategoryPage(refreshCallback: refreshPage,);
-      }
+      body: AddCategoryPage(
+        refreshCallback: refreshPage,
+      ), 
     );
+    // showBottomSheet(
+    //   context: context,
+    //   backgroundColor: Colors.transparent,
+    //   builder: (BuildContext context){
+    //     return AddCategoryPage(refreshCallback: refreshPage,);
+    //   }
+    // );
   }
 
   void refreshPage(){

@@ -3,7 +3,6 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:seriousfocus/bloc/learning_category_model.dart';
 import 'package:seriousfocus/bloc/learning_firebase_service.dart';
 import 'package:seriousfocus/globals.dart';
-import 'package:seriousfocus/pages/learning/learning_category_card.dart';
 import 'package:seriousfocus/widgets/global/seriousfocus_button.dart';
 
 class EditCategoryPartial extends StatefulWidget {
@@ -103,7 +102,7 @@ class _EditCategoryPartialState extends State<EditCategoryPartial> {
         SeriousFocusButton(
           margin: EdgeInsets.only(left: Global.appMargin / 2),
           icon: Icons.create,
-          text: "Bearbeiten",
+          text: "Senden",
           onPressed: _editCategory,
         )
       ],
@@ -116,22 +115,24 @@ class _EditCategoryPartialState extends State<EditCategoryPartial> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          TextFormField(
-            maxLength: 30,
-            controller: _nameController,
-            decoration: InputDecoration(
-              labelText: "Kategoriename",
+          Container(
+            margin: EdgeInsets.only(right: Global.appMargin),
+            child: TextFormField(
+              maxLength: 30,
+              controller: _nameController,
+              decoration: InputDecoration(
+                labelText: "Kategoriename",
+              ),
             ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              CircleAvatar(
-                backgroundColor: _categoryColor,
-              ),
+              // CircleAvatar(
+              //   backgroundColor: _categoryColor,
+              // ),
               SeriousFocusButton(
-                margin: EdgeInsets.only(left: Global.appMargin / 2),
                 icon: Icons.color_lens,
                 backgoundColor: _categoryColor,
                 text: "Farbe auswählen",
@@ -146,33 +147,24 @@ class _EditCategoryPartialState extends State<EditCategoryPartial> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(
-          left: Global.appPadding / 2,
-          right: Global.appPadding / 2,
-          bottom: Global.appPadding * 2),
-      child: Material(
-        color: Colors.white,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(15))),
-        elevation: 10.0,
-        child: Container(
-          padding: EdgeInsets.all(Global.appPadding),
-          width: MediaQuery.of(context).size.width,
-          height: 300,
-          child: GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _header(context),
-                _body(),
-                Spacer(),
-                _submit(context),
-              ],
-            ),
+    return Material(
+      color: Colors.white,
+      child: Container(
+        padding: EdgeInsets.all(Global.appPadding / 2),
+        width: MediaQuery.of(context).size.width,
+        height: 300,
+        child: GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _header(context),
+              _body(),
+              Spacer(),
+              _submit(context),
+            ],
           ),
         ),
       ),

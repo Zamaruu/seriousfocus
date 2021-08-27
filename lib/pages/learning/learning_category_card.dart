@@ -5,6 +5,7 @@ import 'package:seriousfocus/bloc/learning_firebase_service.dart';
 import 'package:seriousfocus/globals.dart';
 import 'package:seriousfocus/pages/learning/edit_category_partial.dart';
 import 'package:seriousfocus/widgets/global/seriousfocus_textbutton.dart';
+import 'package:side_sheet/side_sheet.dart';
 
 class LearningCategoryCard extends StatelessWidget {
   final double height;
@@ -36,15 +37,22 @@ class LearningCategoryCard extends StatelessWidget {
   }
 
   void _editCategory(BuildContext context){
-    showBottomSheet(
-      context: context, 
-      builder: (BuildContext context){
-        return EditCategoryPartial(
-          refreshCallback: refreshCallback, 
-          model: model
-        );
-      }
+    SideSheet.right(
+      context: context,
+      body: EditCategoryPartial(
+        refreshCallback: refreshCallback, 
+        model: model
+      ), 
     );
+    // showBottomSheet(
+    //   context: context, 
+    //   builder: (BuildContext context){
+    //     return EditCategoryPartial(
+    //       refreshCallback: refreshCallback, 
+    //       model: model
+    //     );
+    //   }
+    // );
   }
 
   //Widgets
