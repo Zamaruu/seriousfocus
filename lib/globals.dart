@@ -9,7 +9,7 @@ class Global {
   static double splashRadius = 22.5;
   static double borderRadius = 10.0;
 
-  static Future<void> seriousFocusAlert(BuildContext context, {required Function onPressed, required String title, required String content, required String onPressedText}){
+  static Future<void> seriousFocusAlert(BuildContext context, {required Function onPressed, required String title, required String content, required String onPressedText, bool success = false}){
     return showDialog(
       context: context, 
       builder: (BuildContext context){
@@ -25,9 +25,9 @@ class Global {
                 onPressed: () => Navigator.of(context).pop(),
               ),
               SeriousFocusTextButton(
-                icon: Icons.delete,
-                backgoundColor: Colors.red,
-                contentColor: Colors.red,
+                icon: success? Icons.done: Icons.delete,
+                backgoundColor:  success? Colors.green: Colors.red,
+                contentColor: success? Colors.green: Colors.red,
                 text: onPressedText,
                 onPressed: onPressed,
               ),

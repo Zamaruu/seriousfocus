@@ -20,25 +20,21 @@ class LearningcategoryMenu extends StatelessWidget {
         CircularMenuItem(
           icon: Icons.edit,
           onTap: () {
-            //callback
           },
         ),
         CircularMenuItem(
           icon: Icons.delete,
           onTap: () {
-            //callback
           },
         ),
         CircularMenuItem(
           icon: Icons.add,
           onTap: () {
-            //callback
           },
         ),
         CircularMenuItem(
           icon: Icons.school,
           onTap: () {
-            //callback
           },
         ),
       ]

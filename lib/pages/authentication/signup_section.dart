@@ -1,17 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:seriousfocus/bloc/authentication_service.dart';
+import 'package:seriousfocus/service/authentication_service.dart';
 import 'package:provider/provider.dart';
+import 'package:seriousfocus/globals.dart';
 
-class SignUpSection extends StatelessWidget {
+class SignUpSection extends StatefulWidget {
   final Function stackCallBack;
+
+  SignUpSection({Key? key, required this.stackCallBack}) : super(key: key);
+
+  @override
+  _SignUpSectionState createState() => _SignUpSectionState();
+}
+
+class _SignUpSectionState extends State<SignUpSection> {
   final TextEditingController _emailController = new TextEditingController();
   final TextEditingController _usernameController = new TextEditingController();
   final TextEditingController _passwordController = new TextEditingController();
   final TextEditingController _repeatePasswordController = new TextEditingController();
+  bool _seeEmailAllowed = false;
 
-  SignUpSection({Key? key, required this.stackCallBack}) : super(key: key);
+  @override
+  void initState() { 
+    super.initState();
+    
+  }
 
+  //Methods
   bool checkTextFields(){
     if (_emailController.text.isEmpty) return false;
     else if (_usernameController.text.isEmpty) return false;
@@ -37,17 +52,8 @@ class SignUpSection extends StatelessWidget {
           email: _emailController.text.trim(),
           password: _passwordController.text.trim(),
           username: _usernameController.text.trim(),
+          emailVisible: _seeEmailAllowed,
         );
-        // if(signUpRes == "200"){
-        //   final signInRes = await context.read<AuthenticationService>().signIn(
-        //     email: _emailController.text.trim(),
-        //     password: _passwordController.text.trim(),
-        //   );
-        //   print("Loginresult: $signInRes");
-        // }
-        // else{
-        //   return;
-        // }
       }
       else{
         return;
@@ -58,6 +64,7 @@ class SignUpSection extends StatelessWidget {
     }
   }
 
+  //Widgets
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -74,7 +81,7 @@ class SignUpSection extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      margin: EdgeInsets.only(top: 15),
+                      margin: EdgeInsets.only(top: Global.appMargin),
                       child: TextFormField(
                         controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
@@ -85,7 +92,7 @@ class SignUpSection extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 15),
+                      margin: EdgeInsets.only(top: Global.appMargin),
                       child: TextFormField(
                         controller: _usernameController,
                         decoration: InputDecoration(
@@ -95,7 +102,7 @@ class SignUpSection extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 15),
+                      margin: EdgeInsets.only(top: Global.appMargin),
                       child: TextFormField(
                         controller: _passwordController,
                         obscureText: true,
@@ -106,7 +113,7 @@ class SignUpSection extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 15),
+                      margin: EdgeInsets.only(top: Global.appMargin),
                       child: TextFormField(
                         controller: _repeatePasswordController,
                         obscureText: true,
@@ -114,6 +121,18 @@ class SignUpSection extends StatelessWidget {
                           labelText: "Passwort wiederholen",
                           focusColor: Colors.purple,
                         ),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: Global.appMargin),
+                      child: CheckboxListTile(
+                        value: _seeEmailAllowed,
+                        onChanged: (newValue) {
+                          setState(() {
+                            _seeEmailAllowed = newValue!;
+                          });
+                        },
+                        title: Text("E-Mail für andere sichtbar?"),
                       ),
                     ),
                   ],
@@ -129,7 +148,7 @@ class SignUpSection extends StatelessWidget {
                     height: double.maxFinite,
                     width: MediaQuery.of(context).size.width * 0.5,
                     child: TextButton.icon(
-                      onPressed: () => stackCallBack(0),
+                      onPressed: () => widget.stackCallBack(0),
                       icon: FaIcon(FontAwesomeIcons.arrowLeft),
                       label: Text("Zurück"),
                       style:

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:seriousfocus/bloc/authentication_service.dart';
+import 'package:seriousfocus/service/authentication_service.dart';
 import 'package:provider/provider.dart';
 
 class SignInSection extends StatelessWidget {

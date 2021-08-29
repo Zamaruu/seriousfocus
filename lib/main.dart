@@ -4,7 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
-import 'package:seriousfocus/bloc/authentication_service.dart';
+import 'package:seriousfocus/service/authentication_service.dart';
 import 'package:seriousfocus/pages/authentication/loginpage.dart';
 import 'package:seriousfocus/pages/mainnavigationpage.dart';
 

@@ -1,11 +1,8 @@
-import 'dart:io';
-import 'package:file_picker/file_picker.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:seriousfocus/bloc/authentication_service.dart';
-import 'package:seriousfocus/bloc/firebase_user_service.dart';
+import 'package:seriousfocus/bloc/seriousfocus_user_model.dart';
+import 'package:seriousfocus/service/authentication_service.dart';
+import 'package:seriousfocus/service/firebase_user_service.dart';
 import 'package:seriousfocus/globals.dart';
 import 'package:seriousfocus/widgets/global/seriousfocus_scaffold.dart';
 import 'package:provider/provider.dart';
@@ -26,6 +23,12 @@ class _UserpageState extends State<Userpage> {
   void _launchURL(_url) async => await canLaunch(_url)
       ? await launch(_url)
       : throw 'Could not launch $_url';
+
+  void refreshPage(){
+    setState(() {
+      
+    });
+  }
 
   Future<dynamic> _deleteAccountDialog(BuildContext context){
     return showDialog(
@@ -57,99 +60,109 @@ class _UserpageState extends State<Userpage> {
     );
   }
 
+  Future changeEmailVisibleStatus(BuildContext context, UserModel user,bool newValue) async {
+    Global.seriousFocusAlert(
+      context, 
+      success: true,
+      onPressed: ()async{
+        await user.changeEmailVisibleStatus(newValue);
+        Navigator.pop(context);
+        refreshPage();
+      }, 
+      title: "Sichtbarkeit ändern", 
+      content: "Wollen Sie wirklich die Sichtbarkeit Ihrer E-Mail Adresse ändern?", 
+      onPressedText: "Ja, Ändern"
+    );
+
+  }
+
   //Widgtes
+  Material _body(UserModel user){
+    return Material(
+      color: Colors.white,
+      child: Container(
+        //color: Colors.white,
+        padding: EdgeInsets.only(left: Global.appPadding, top: Global.appPadding),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CircleAvatar(
+              radius: 60,
+              backgroundColor: Colors.purple,
+              child: FaIcon(
+                FontAwesomeIcons.user,
+                color: Colors.white,
+                size: 40,
+              ),
+            ),
+            if (user.displayName.isNotEmpty)
+              UserDataTile(
+                margin: EdgeInsets.only(top: Global.appMargin),
+                icon: FontAwesomeIcons.signature,
+                title: user.displayName,
+                onTap: () {},
+              ),
+            if(user.getEmail().isNotEmpty)
+              UserDataTile(
+                icon: FontAwesomeIcons.envelope,
+                title: user.getEmail(),
+                onTap: () {
+                  _launchURL("mailto:"+user.getEmail());
+                },
+              ),
+            UserDataTile(
+              icon: user.emailVisible? FontAwesomeIcons.check: FontAwesomeIcons.timesCircle, 
+              title: user.emailVisible? "E-Mail Addresse sichtbar": "E-Mail Adresse nicht sichtbar", 
+              onTap: () => changeEmailVisibleStatus(context, user, !user.emailVisible),
+            ),
+            UserDataTile.color(
+              onTap: (){}, 
+              userColor: Color(user.userColor),
+            ),
+            UserDataTile(
+              icon: Icons.delete,
+              title: "Konto löschen",
+              onTap: () => _deleteAccountDialog(context),
+            ),
+            UserDataTile(
+              icon: FontAwesomeIcons.signOutAlt,
+              title: "Abmelden",
+              onTap: () => context.read<AuthenticationService>().logout(), 
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  FutureBuilder _userPageBuilder(){
+    return FutureBuilder<UserModel>(
+      future: UserService().getCurrentUser(),
+      builder: (BuildContext context, AsyncSnapshot<UserModel> snapshot) {
+        if(snapshot.connectionState == ConnectionState.waiting){
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        else if(snapshot.hasError){
+          return Center(
+            child: Text(snapshot.error.toString()),
+          );
+        }
+        else{
+          return _body(snapshot.data!);
+        }
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser;
     return SeriousFocusScaffold(
       showAppBar: true,
       title: "Benutzer",
-      body: Material(
-        color: Colors.white,
-        child: Container(
-          //color: Colors.white,
-          padding: EdgeInsets.only(left: Global.appPadding, top: Global.appPadding),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              user!.photoURL != null?
-                CircleAvatar(
-                  radius: 60,
-                  backgroundColor: Colors.purple,
-                  backgroundImage: NetworkImage(user.photoURL!),
-                ):
-                CircleAvatar(
-                  radius: 60,
-                  backgroundColor: Colors.purple,
-                  child: FaIcon(FontAwesomeIcons.user, color: Colors.white, size: 40,),
-                ),
-              if(user.photoURL == null)
-                UserDataTile(
-                  margin: EdgeInsets.only(top: Global.appMargin),
-                  icon: Icons.cloud_upload,
-                  title: "Bild hochladen",
-                  onTap: () async {
-                    FilePickerResult? result = await FilePicker.platform.pickFiles();
-
-                    if (result != null) {
-                      File file = File(result.files.single.path!);
-                      String url = await UserService().uploadFile(file);
-                      await user.reload();
-
-                      setState(() {
-                      });
-                    }
-                  },
-                ),
-              if(user.displayName != null)
-                if(user.displayName!.isNotEmpty)
-                  UserDataTile(
-                    //margin: EdgeInsets.only(top: Global.appMargin),
-                    icon: FontAwesomeIcons.signature, 
-                    title: user.displayName!, 
-                    onTap: (){},
-                  ),
-              UserDataTile(
-                margin: user.photoURL != null? EdgeInsets.only(top: Global.appMargin): EdgeInsets.zero,
-                icon: FontAwesomeIcons.envelope,
-                title: user.email!,
-                onTap: () {
-                  _launchURL("mailto:"+user.email!);
-                },
-              ),
-              if (user.photoURL != null)
-                UserDataTile(
-                  icon: Icons.cloud_upload,
-                  title: "Bild aktualisieren",
-                  onTap: () async {
-                    FilePickerResult? result =
-                        await FilePicker.platform.pickFiles();
-
-                    if (result != null) {
-                      File file = File(result.files.single.path!);
-                      String url = await UserService().uploadFile(file);
-                      await user.reload();
-                      setState(() {
-                      });
-                    }
-                  },
-                ),
-              UserDataTile(
-                icon: Icons.delete,
-                title: "Konto löschen",
-                onTap: () => _deleteAccountDialog(context),
-              ),
-              UserDataTile(
-                icon: FontAwesomeIcons.signOutAlt,
-                title: "Abmelden",
-                onTap: () => context.read<AuthenticationService>().logout(), 
-              ),
-            ],
-          ),
-        ),
-      ),
+      body: _userPageBuilder(),
     );
   }
 }
