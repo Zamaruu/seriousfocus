@@ -22,7 +22,7 @@ class _SeriousFocusMainNavigationPageState extends State<SeriousFocusMainNavigat
   @override
   void initState() {
     super.initState();
-    _pageindex = 2;
+    _pageindex = 4;
   }
 
   final List<Widget> _mainpages = [

@@ -8,6 +8,7 @@ class Global {
   static double appMargin = 15;
   static double splashRadius = 22.5;
   static double borderRadius = 10.0;
+  static double listviewBottomSpace = 50.0;
 
   static Future<void> seriousFocusAlert(BuildContext context, {required Function onPressed, required String title, required String content, required String onPressedText, bool success = false}){
     return showDialog(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:seriousfocus/bloc/seriousfocus_user_model.dart';
 import 'package:seriousfocus/service/authentication_service.dart';
@@ -7,6 +8,7 @@ import 'package:seriousfocus/globals.dart';
 import 'package:seriousfocus/widgets/global/seriousfocus_scaffold.dart';
 import 'package:provider/provider.dart';
 import 'package:seriousfocus/widgets/global/seriousfocus_textbutton.dart';
+import 'package:seriousfocus/widgets/global/seriousfocus_useravatar.dart';
 import 'package:seriousfocus/widgets/user/userdatatile.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -60,7 +62,7 @@ class _UserpageState extends State<Userpage> {
     );
   }
 
-  Future changeEmailVisibleStatus(BuildContext context, UserModel user,bool newValue) async {
+  Future changeEmailVisibleStatus(BuildContext context, UserModel user, bool newValue) async {
     Global.seriousFocusAlert(
       context, 
       success: true,
@@ -73,7 +75,27 @@ class _UserpageState extends State<Userpage> {
       content: "Wollen Sie wirklich die Sichtbarkeit Ihrer E-Mail Adresse ändern?", 
       onPressedText: "Ja, Ändern"
     );
+  }
 
+  void changeUserColor(BuildContext context, UserModel user){
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Benutzerfarbe ändern"),
+          content: SingleChildScrollView(
+            child: BlockPicker(
+              pickerColor: Color(user.userColor),
+              onColorChanged: (color) async {
+                await user.changeUserColor(color);
+                Navigator.of(context).pop();
+                refreshPage();
+              },
+            ),
+          ),
+        );
+      },
+    );
   }
 
   //Widgtes
@@ -81,56 +103,65 @@ class _UserpageState extends State<Userpage> {
     return Material(
       color: Colors.white,
       child: Container(
-        //color: Colors.white,
-        padding: EdgeInsets.only(left: Global.appPadding, top: Global.appPadding),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CircleAvatar(
-              radius: 60,
-              backgroundColor: Colors.purple,
-              child: FaIcon(
-                FontAwesomeIcons.user,
-                color: Colors.white,
-                size: 40,
+        height: double.maxFinite,
+        child: SingleChildScrollView(
+          //color: Colors.white,
+          padding: EdgeInsets.only(left: Global.appPadding, top: Global.appPadding),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SeriousFocusUserAvatar(
+                userDisplayName: user.displayName, 
+                backgroundColor: Color(user.userColor),
+                radius: 60,
               ),
-            ),
-            if (user.displayName.isNotEmpty)
+              // CircleAvatar(
+              //   radius: 60,
+              //   backgroundColor: Colors.purple,
+              //   child: FaIcon(
+              //     FontAwesomeIcons.user,
+              //     color: Colors.white,
+              //     size: 40,
+              //   ),
+              // ),
+              if (user.displayName.isNotEmpty)
+                UserDataTile(
+                  margin: EdgeInsets.only(top: Global.appMargin),
+                  icon: FontAwesomeIcons.signature,
+                  title: user.displayName,
+                  onTap: () {},
+                ),
+              if(user.getEmail().isNotEmpty)
+                UserDataTile(
+                  icon: FontAwesomeIcons.envelope,
+                  title: user.getEmail(),
+                  onTap: () {
+                    _launchURL("mailto:"+user.getEmail());
+                  },
+                ),
               UserDataTile(
-                margin: EdgeInsets.only(top: Global.appMargin),
-                icon: FontAwesomeIcons.signature,
-                title: user.displayName,
-                onTap: () {},
+                icon: user.emailVisible? FontAwesomeIcons.check: FontAwesomeIcons.timesCircle, 
+                title: user.emailVisible? "E-Mail Addresse sichtbar": "E-Mail Adresse nicht sichtbar", 
+                onTap: () => changeEmailVisibleStatus(context, user, !user.emailVisible),
               ),
-            if(user.getEmail().isNotEmpty)
+              UserDataTile.color(
+                onTap: () => changeUserColor(context, user), 
+                userColor: Color(user.userColor),
+              ),
               UserDataTile(
-                icon: FontAwesomeIcons.envelope,
-                title: user.getEmail(),
-                onTap: () {
-                  _launchURL("mailto:"+user.getEmail());
-                },
+                icon: Icons.delete,
+                title: "Konto löschen",
+                onTap: () => _deleteAccountDialog(context),
               ),
-            UserDataTile(
-              icon: user.emailVisible? FontAwesomeIcons.check: FontAwesomeIcons.timesCircle, 
-              title: user.emailVisible? "E-Mail Addresse sichtbar": "E-Mail Adresse nicht sichtbar", 
-              onTap: () => changeEmailVisibleStatus(context, user, !user.emailVisible),
-            ),
-            UserDataTile.color(
-              onTap: (){}, 
-              userColor: Color(user.userColor),
-            ),
-            UserDataTile(
-              icon: Icons.delete,
-              title: "Konto löschen",
-              onTap: () => _deleteAccountDialog(context),
-            ),
-            UserDataTile(
-              icon: FontAwesomeIcons.signOutAlt,
-              title: "Abmelden",
-              onTap: () => context.read<AuthenticationService>().logout(), 
-            ),
-          ],
+              UserDataTile(
+                icon: FontAwesomeIcons.signOutAlt,
+                title: "Abmelden",
+                onTap: () => context.read<AuthenticationService>().logout(), 
+              ),
+              SizedBox(height: Global.listviewBottomSpace,)
+            ],
+          ),
         ),
       ),
     );
