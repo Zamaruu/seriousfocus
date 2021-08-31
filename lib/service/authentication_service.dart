@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:seriousfocus/utils/authentication_response_handler.dart';
 
 class AuthenticationService extends ChangeNotifier {
 
@@ -26,11 +27,12 @@ class AuthenticationService extends ChangeNotifier {
     }
   }
 
-  Future<String> signIn({required String email, required String password}) async {
+  Future<String> signIn({required String email, required String password, required BuildContext context}) async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
       return "200";
     } on FirebaseAuthException catch (e) {
+      AuthenticationResponseHandler(context: context, errorcode: e.code);
       return e.message!;
     }
   }

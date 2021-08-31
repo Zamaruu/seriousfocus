@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:seriousfocus/service/authentication_service.dart';
 import 'package:provider/provider.dart';
+import 'package:seriousfocus/utils/authentication_response_handler.dart';
 
 class SignInSection extends StatelessWidget {
   final Function stackCallBack;
@@ -9,6 +10,25 @@ class SignInSection extends StatelessWidget {
   final TextEditingController _passwordController = new TextEditingController();
 
   SignInSection({ Key? key, required this.stackCallBack }) : super(key: key);
+
+  void _trySignIn(BuildContext context) async {
+    String email = _emailController.text.trim();
+    String password = _passwordController.text.trim();
+
+    if (email.isEmpty) {
+      AuthenticationResponseHandler(context: context, errorcode: "no-email");
+    }
+    else if(password.isEmpty){
+      AuthenticationResponseHandler(context: context, errorcode: "no-password");
+    }
+    else{
+      await context.read<AuthenticationService>().signIn(
+        email: _emailController.text.trim(), 
+        password: _passwordController.text.trim(),
+        context: context,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,13 +91,7 @@ class SignInSection extends StatelessWidget {
                     height: double.maxFinite,
                     width: MediaQuery.of(context).size.width * 0.5,
                     child: TextButton.icon(
-                      onPressed: () async {
-                        final res = await context.read<AuthenticationService>().signIn(
-                          email: _emailController.text.trim(), 
-                          password: _passwordController.text.trim()
-                        );
-                        print("Loginresponse: " + res);
-                      },
+                      onPressed: () => _trySignIn(context),
                       icon: FaIcon(FontAwesomeIcons.signInAlt),
                       label: Text("Anmelden"),
                       style: TextButton.styleFrom(primary: Colors.purple),
