@@ -4,7 +4,7 @@ import 'package:seriousfocus/pages/forum/forumpage.dart';
 import 'package:seriousfocus/pages/home/homepage.dart';
 import 'package:seriousfocus/pages/learning/learningpage.dart';
 import 'package:seriousfocus/pages/tasks/taskpage.dart';
-import 'package:seriousfocus/pages/user/userpage.dart';
+import 'package:seriousfocus/pages/user/main_user_page.dart';
 import 'package:seriousfocus/widgets/global/seriousfocus_scaffold.dart';
 
 class SeriousFocusMainNavigationPage extends StatefulWidget {
@@ -22,7 +22,7 @@ class _SeriousFocusMainNavigationPageState extends State<SeriousFocusMainNavigat
   @override
   void initState() {
     super.initState();
-    _pageindex = 0;
+    _pageindex = 4;
   }
 
   final List<Widget> _mainpages = [
@@ -30,7 +30,7 @@ class _SeriousFocusMainNavigationPageState extends State<SeriousFocusMainNavigat
     Forumpage(),
     Learningpage(),
     Taskpage(),
-    Userpage(),
+    MainUserPage(),
   ];
 
   @override

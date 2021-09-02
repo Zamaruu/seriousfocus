@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:seriousfocus/globals.dart';
 
 class SeriousFocusUserAvatar extends StatelessWidget {
   final double radius;
@@ -24,6 +25,7 @@ class SeriousFocusUserAvatar extends StatelessWidget {
     return Container(
       width: radius,
       height: radius,
+      padding: EdgeInsets.all(Global.appPadding / 2),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: backgroundColor

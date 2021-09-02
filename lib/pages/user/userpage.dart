@@ -13,7 +13,8 @@ import 'package:seriousfocus/widgets/user/userdatatile.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Userpage extends StatefulWidget {
-  const Userpage({Key? key}) : super(key: key);
+  final UserModel? user;
+  Userpage({Key? key, this.user}) : super(key: key);
 
   @override
   _UserpageState createState() => _UserpageState();
@@ -116,15 +117,6 @@ class _UserpageState extends State<Userpage> {
                 backgroundColor: Color(user.userColor),
                 radius: 60,
               ),
-              // CircleAvatar(
-              //   radius: 60,
-              //   backgroundColor: Colors.purple,
-              //   child: FaIcon(
-              //     FontAwesomeIcons.user,
-              //     color: Colors.white,
-              //     size: 40,
-              //   ),
-              // ),
               if (user.displayName.isNotEmpty)
                 UserDataTile(
                   margin: EdgeInsets.only(top: Global.appMargin),
@@ -191,9 +183,11 @@ class _UserpageState extends State<Userpage> {
   @override
   Widget build(BuildContext context) {
     return SeriousFocusScaffold(
-      showAppBar: true,
-      title: "Benutzer",
-      body: _userPageBuilder(),
+      showAppBar: widget.user != null? true: false,
+      title: widget.user != null? widget.user!.displayName: "",
+      body: widget.user != null?
+        _body(widget.user!): 
+        _userPageBuilder(),
     );
   }
 }

@@ -20,7 +20,17 @@ class UserModel {
     this.userColor = userColor;
   }
 
-  UserModel.apiStorage();
+  UserModel.apiStorage({
+    required this.uid,
+    required email,
+    required emailVisible,
+    required this.displayName,
+    required this.userColor,
+  }){
+    this._email = email;
+    this._emailVisible = emailVisible;
+    this._isLocalUser = false;
+  }
 
   //Returns email only when the local user is accessing it or the remote user allowed this.
   String getEmail() {
