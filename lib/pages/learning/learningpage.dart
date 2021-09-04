@@ -32,7 +32,7 @@ class _LearningpageState extends State<Learningpage> {
     // );
   }
 
-  void refreshPage(){
+  Future<void> refreshPage()async{
     setState(() {
       
     });
@@ -40,12 +40,6 @@ class _LearningpageState extends State<Learningpage> {
 
   List<Widget> _actions(BuildContext context) {
     return <IconButton>[
-      IconButton(
-        onPressed: refreshPage,
-        icon: Icon(Icons.refresh),
-        color: Colors.purple,
-        splashRadius: Global.splashRadius,
-      ),
       IconButton(
         onPressed: () => createNewCategory(context),
         icon: Icon(Icons.add),
@@ -76,12 +70,15 @@ class _LearningpageState extends State<Learningpage> {
           else{
             if(snapshot.data!.length >= 1){
               return Center(
-                child: ListView.builder(
-                  itemCount: snapshot.data!.length,
-                  padding: EdgeInsets.only(bottom: Global.appPadding * 2),
-                  itemBuilder: (context, index){
-                    return LearningCategoryCard(model: snapshot.data![index], refreshCallback: refreshPage,);
-                  }
+                child: RefreshIndicator(
+                  onRefresh: refreshPage,
+                  child: ListView.builder(
+                    itemCount: snapshot.data!.length,
+                    padding: EdgeInsets.only(bottom: Global.appPadding * 2),
+                    itemBuilder: (context, index){
+                      return LearningCategoryCard(model: snapshot.data![index], refreshCallback: refreshPage,);
+                    }
+                  ),
                 ),
               );
             }
