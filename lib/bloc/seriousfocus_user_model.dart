@@ -9,6 +9,7 @@ class UserModel {
   late bool _emailVisible;
   bool get emailVisible => _emailVisible;
   late bool _isLocalUser;
+  bool get isLocalUser => _isLocalUser;
   late int userColor;
 
   UserModel.localUser(User currentUser, bool emailVisible, int userColor) {

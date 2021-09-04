@@ -132,25 +132,29 @@ class _UserpageState extends State<Userpage> {
                     _launchURL("mailto:"+user.getEmail());
                   },
                 ),
-              UserDataTile(
-                icon: user.emailVisible? FontAwesomeIcons.check: FontAwesomeIcons.timesCircle, 
-                title: user.emailVisible? "E-Mail Addresse sichtbar": "E-Mail Adresse nicht sichtbar", 
-                onTap: () => changeEmailVisibleStatus(context, user, !user.emailVisible),
-              ),
-              UserDataTile.color(
-                onTap: () => changeUserColor(context, user), 
-                userColor: Color(user.userColor),
-              ),
-              UserDataTile(
-                icon: Icons.delete,
-                title: "Konto löschen",
-                onTap: () => _deleteAccountDialog(context),
-              ),
-              UserDataTile(
-                icon: FontAwesomeIcons.signOutAlt,
-                title: "Abmelden",
-                onTap: () => context.read<AuthenticationService>().logout(), 
-              ),
+              if(user.isLocalUser)
+                UserDataTile(
+                  icon: user.emailVisible? FontAwesomeIcons.check: FontAwesomeIcons.timesCircle, 
+                  title: user.emailVisible? "E-Mail Addresse sichtbar": "E-Mail Adresse nicht sichtbar", 
+                  onTap: () => changeEmailVisibleStatus(context, user, !user.emailVisible),
+                ),
+              if (user.isLocalUser)
+                UserDataTile.color(
+                  onTap: () => changeUserColor(context, user), 
+                  userColor: Color(user.userColor),
+                ),
+              if (user.isLocalUser)
+                UserDataTile(
+                  icon: Icons.delete,
+                  title: "Konto löschen",
+                  onTap: () => _deleteAccountDialog(context),
+                ),
+              if (user.isLocalUser)
+                UserDataTile(
+                  icon: FontAwesomeIcons.signOutAlt,
+                  title: "Abmelden",
+                  onTap: () => context.read<AuthenticationService>().logout(), 
+                ),
               SizedBox(height: Global.listviewBottomSpace,)
             ],
           ),
