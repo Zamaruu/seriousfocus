@@ -112,18 +112,24 @@ class _UserpageState extends State<Userpage> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SeriousFocusUserAvatar(
-                userDisplayName: user.displayName, 
-                backgroundColor: Color(user.userColor),
-                radius: 60,
+              Row(
+                children: [
+                  SeriousFocusUserAvatar(
+                    userDisplayName: user.displayName, 
+                    backgroundColor: Color(user.userColor),
+                    radius: 60,
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: Global.appMargin),
+                    child: Text(
+                      user.displayName.isNotEmpty? user.displayName: "",
+                      style: TextStyle(
+                        fontSize: 20
+                      ),
+                    ),
+                  )
+                ],
               ),
-              if (user.displayName.isNotEmpty)
-                UserDataTile(
-                  margin: EdgeInsets.only(top: Global.appMargin),
-                  icon: FontAwesomeIcons.signature,
-                  title: user.displayName,
-                  onTap: () {},
-                ),
               if(user.getEmail().isNotEmpty)
                 UserDataTile(
                   icon: FontAwesomeIcons.envelope,
