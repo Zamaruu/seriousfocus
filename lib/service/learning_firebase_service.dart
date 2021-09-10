@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:seriousfocus/bloc/learning_category_model.dart';
+import 'package:seriousfocus/bloc/learning_flashcard_model.dart';
 
 class LearningService {
   late String _uid;
@@ -65,27 +66,54 @@ class LearningService {
   }
 
   //Flipcard methods
-  getAllFlipCardsForCategory(){
+  Future<List<LearningFlashcardModel>> getAllFlashcardsForCategory(String categoryID) async {
+    List<LearningFlashcardModel> cards = <LearningFlashcardModel>[];
+    late Map<String, dynamic> flashcard;
+    QuerySnapshot result = await FirebaseFirestore.instance
+        .collection(_collection)
+        .doc(_uid)
+        .collection("myFlashcards")
+        .where("categoryid", isEqualTo: categoryID.trim())
+        .get();
+
+    for (DocumentSnapshot doc in result.docs) {
+      flashcard = doc.data() as Map<String, dynamic>;
+      flashcard["id"] = doc.id;
+      cards.add(
+        new LearningFlashcardModel.fromJson(flashcard),
+      );
+    }
+
+    return cards;
+  }
+
+  Future<void> createNewFlashcard(LearningFlashcardModel model) async{
+    var res = await FirebaseFirestore.instance
+      .collection(_collection)
+      .doc(_uid)
+      .collection("myFlashcards")
+      .add(model.toMap());
+    print(res);
+  }
+
+  editFlashcard(){
 
   }
 
-  createNewFlipcard(){
+  Future<void> deleteFlashcard(String flashcardID) async {
+    await FirebaseFirestore.instance
+      .collection(_collection)
+      .doc(_uid)
+      .collection("myFlashcards")
+      .doc(flashcardID)
+      .delete();
+  }
+
+  moveFlashcardsToOtherCategory(){
 
   }
 
-  editFlipcard(){
-
-  }
-
-  deleteFlipcard(){
-
-  }
-
-  moveFlipcardToOtherCategory(){
-
-  }
-
-  setFlipCardLearningValues(){
+  setlFashcardsLearningValues(){
 
   }
 }

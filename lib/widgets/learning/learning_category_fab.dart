@@ -4,12 +4,15 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:seriousfocus/globals.dart';
 
 class LearningcategoryMenu extends StatelessWidget {
-  const LearningcategoryMenu({Key? key}) : super(key: key);
+  final Function onNewPressed;
+
+  const LearningcategoryMenu({Key? key, required this.onNewPressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return CircularMenu(
       alignment: Alignment.bottomRight,
+      curve: Curves.easeInOutBack,
       toggleButtonColor: Theme.of(context).primaryColor,
       radius: 115,
       toggleButtonIconColor: Colors.white,
@@ -29,8 +32,7 @@ class LearningcategoryMenu extends StatelessWidget {
         ),
         CircularMenuItem(
           icon: Icons.add,
-          onTap: () {
-          },
+          onTap: () => onNewPressed(),
         ),
         CircularMenuItem(
           icon: Icons.school,
