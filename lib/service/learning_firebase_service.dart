@@ -28,7 +28,7 @@ class LearningService {
       categories.add(
         new LearningCategoryModel.formFirebase(
           doc.id, 
-          0, 
+          await countFlashcardsForCategory(doc.id), 
           new Color(data['color']), 
           data['name'],
         ),
@@ -87,6 +87,17 @@ class LearningService {
     return cards;
   }
 
+  Future<int> countFlashcardsForCategory(String categoryID) async {
+    QuerySnapshot result = await FirebaseFirestore.instance
+      .collection(_collection)
+      .doc(_uid)
+      .collection("myFlashcards")
+      .where("categoryid", isEqualTo: categoryID.trim())
+      .get();
+
+    return result.size;
+  }
+
   Future<void> createNewFlashcard(LearningFlashcardModel model) async{
     var res = await FirebaseFirestore.instance
       .collection(_collection)
@@ -100,20 +111,31 @@ class LearningService {
 
   }
 
-  Future<void> deleteFlashcard(String flashcardID) async {
-    await FirebaseFirestore.instance
-      .collection(_collection)
-      .doc(_uid)
-      .collection("myFlashcards")
-      .doc(flashcardID)
-      .delete();
+  Future<void> deleteFlashcard(List<String> flashcardIDs) async {
+    for (String id in flashcardIDs) {
+      await FirebaseFirestore.instance
+        .collection(_collection)
+        .doc(_uid)
+        .collection("myFlashcards")
+        .doc(id)
+        .delete();
+    }
   }
 
-  moveFlashcardsToOtherCategory(){
-
+  Future<void> moveFlashcardsToOtherCategory(List<String> flashcardIDs, String categoryID) async {
+    for (String id in flashcardIDs) {
+      await FirebaseFirestore.instance
+        .collection(_collection)
+        .doc(_uid)
+        .collection("myFlashcards")
+        .doc(id)
+        .update({
+          "categoryid": categoryID,
+        });
+    }
   }
 
-  setlFashcardsLearningValues(){
+  setFashcardsLearningStatus(){
 
   }
 }

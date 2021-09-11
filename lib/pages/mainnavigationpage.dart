@@ -22,7 +22,7 @@ class _SeriousFocusMainNavigationPageState extends State<SeriousFocusMainNavigat
   @override
   void initState() {
     super.initState();
-    _pageindex = 2;
+    _pageindex = 0;
   }
 
   final List<Widget> _mainpages = [
@@ -49,7 +49,7 @@ class _SeriousFocusMainNavigationPageState extends State<SeriousFocusMainNavigat
               items: <Icon>[
                 Icon(Icons.home, size: iconSize, color: iconColor,),
                 Icon(Icons.forum, size: iconSize, color: iconColor,),
-                Icon(Icons.dashboard_rounded, size: iconSize, color: iconColor,),
+                Icon(Icons.school, size: iconSize, color: iconColor,),
                 Icon(Icons.checklist, size: iconSize, color: iconColor,),
                 Icon(Icons.person, size: iconSize, color: iconColor,),
               ],

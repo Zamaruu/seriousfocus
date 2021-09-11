@@ -14,6 +14,12 @@ class LearningcategoryMenu extends StatelessWidget {
       alignment: Alignment.bottomRight,
       curve: Curves.easeInOutBack,
       toggleButtonColor: Theme.of(context).primaryColor,
+      toggleButtonBoxShadow: [
+        BoxShadow(
+          blurRadius: 0,
+          spreadRadius: 0.0
+        ),
+      ],
       radius: 115,
       toggleButtonIconColor: Colors.white,
       toggleButtonMargin: 5.0,
@@ -21,20 +27,32 @@ class LearningcategoryMenu extends StatelessWidget {
       toggleButtonSize: 40.0,
       items: [
         CircularMenuItem(
+          boxShadow: [
+            BoxShadow(blurRadius: 0, spreadRadius: 0.0),
+          ],
           icon: Icons.edit,
           onTap: () {
           },
         ),
         CircularMenuItem(
+          boxShadow: [
+            BoxShadow(blurRadius: 0, spreadRadius: 0.0),
+          ],
           icon: Icons.delete,
           onTap: () {
           },
         ),
         CircularMenuItem(
+          boxShadow: [
+            BoxShadow(blurRadius: 0, spreadRadius: 0.0),
+          ],
           icon: Icons.add,
           onTap: () => onNewPressed(),
         ),
         CircularMenuItem(
+          boxShadow: [
+            BoxShadow(blurRadius: 0, spreadRadius: 0.0),
+          ],
           icon: Icons.school,
           onTap: () {
           },

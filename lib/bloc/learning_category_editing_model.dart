@@ -8,13 +8,20 @@ class LearningEditingModel extends ChangeNotifier {
 
   void addFlashcardToList(String flashcardID){
     if(!_selectedFlashcards.contains(flashcardID))
-      _selectedFlashcards.add(flashcardID);
+      _selectedFlashcards = [flashcardID, ..._selectedFlashcards];
+    print(_selectedFlashcards);
     notifyListeners();
   }
 
   void removeFlashcardFromList(String flashcardID){
     if (_selectedFlashcards.contains(flashcardID))
       _selectedFlashcards.remove(flashcardID);
+    print(_selectedFlashcards);
+    notifyListeners();
+  }
+
+  void resetSelectedFlashcards(){
+    _selectedFlashcards = [];
     notifyListeners();
   }
 }

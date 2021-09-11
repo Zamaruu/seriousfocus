@@ -4,6 +4,9 @@ import 'package:seriousfocus/bloc/learning_category_editing_model.dart';
 import 'package:seriousfocus/bloc/learning_flashcard_model.dart';
 import 'package:seriousfocus/globals.dart';
 import 'package:seriousfocus/service/learning_firebase_service.dart';
+import 'package:seriousfocus/widgets/global/seriousfocus_popupmenuitem.dart';
+
+import 'learning_move_to_category.dart';
 
 class LearningFlashcardCard extends StatelessWidget {
   final LearningFlashcardModel model;
@@ -36,29 +39,6 @@ class LearningFlashcardCard extends StatelessWidget {
   }
 
   //Widgtes
-  PopupMenuItem _actionItem(BuildContext context, {required String title, required IconData icon, required Function onTap}){
-    return PopupMenuItem(
-      child: GestureDetector(
-        onTap: () async {
-          await onTap();
-          refreshCallback();
-          Navigator.of(context).pop();
-        },
-        child: Row(
-          children: [
-            Container(
-              child: Icon(
-                icon,
-                color: Theme.of(context).primaryColor,
-              ),
-            ),
-            SizedBox(width: 10,),
-            Text(title),
-          ],
-        ),
-      ),
-    );
-  }
 
   Row _actions(BuildContext context){
     return Row(
@@ -83,23 +63,23 @@ class LearningFlashcardCard extends StatelessWidget {
           tooltip: "Optionen",
           icon: Icon(Icons.more_vert),
           itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-            _actionItem(
+            SeriousFocusPopup().actionItem(
               context, 
               title: "Bearbeiten", 
               icon: Icons.edit, 
               onTap: (){},
             ),
-            _actionItem(
+            SeriousFocusPopup().actionItem(
               context,
               title: "Verschieben",
               icon: Icons.move_to_inbox,
-              onTap: () {},
+               onTap: () => LearningMoveToCategory(context).moveToCategory([model.documentID!], refreshCallback),
             ),
-            _actionItem(
+            SeriousFocusPopup().actionItem(
               context,
               title: "Löschen",
               icon: Icons.delete,
-              onTap: () => LearningService().deleteFlashcard(model.documentID!),
+              onTap: () => LearningService().deleteFlashcard([model.documentID!]),
             ),
           ],
         ),
@@ -144,6 +124,9 @@ class LearningFlashcardCard extends StatelessWidget {
                       Center(
                         child: Text(
                           model.question,
+                          maxLines: 3,
+                          textAlign: TextAlign.center,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       _actions(context),

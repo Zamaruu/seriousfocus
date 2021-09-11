@@ -56,7 +56,7 @@ class LearningCategoryCard extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => LearningCategoryPage(model: model),
+        builder: (context) => LearningStateparent(model: model),
       ),
     );
   }
