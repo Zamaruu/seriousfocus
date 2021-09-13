@@ -4,6 +4,7 @@ import 'package:seriousfocus/bloc/learning_category_editing_model.dart';
 import 'package:seriousfocus/bloc/learning_category_model.dart';
 import 'package:seriousfocus/bloc/learning_flashcard_model.dart';
 import 'package:seriousfocus/pages/learning/add_flashcard_partial.dart';
+import 'package:seriousfocus/pages/learning/learning_flashcards.dart';
 import 'package:seriousfocus/service/caching_service.dart';
 import 'package:seriousfocus/service/learning_firebase_service.dart';
 import 'package:seriousfocus/widgets/global/seriousfocus_popupmenuitem.dart';
@@ -43,7 +44,6 @@ class _LearningCategoryPageState extends State<LearningCategoryPage> {
   //Methods
   Future<void> _refreshPage() async {
     setState(() {
-      
     });
   }
 
@@ -105,7 +105,11 @@ class _LearningCategoryPageState extends State<LearningCategoryPage> {
           refreshCallback: _refreshPage,
           onTap: () => Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => LearningFlipcard(model: flashcards[index])
+              builder: (context) => LearningFlashcards(
+                categoryName: widget.model.name, 
+                flashcards: flashcards,
+                initialFlashCard: flashcards[index],
+              ),
             )
           ),
         );

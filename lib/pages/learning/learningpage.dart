@@ -34,7 +34,9 @@ class _LearningpageState extends State<Learningpage> {
   }
 
   Future<void> refreshPage() async {
-    setState(() {});
+    CachingService.cachedLearningCategories = <LearningCategoryModel>[];
+    setState(() {
+    });
   }
 
   List<Widget> _actions(BuildContext context) {
@@ -65,9 +67,35 @@ class _LearningpageState extends State<Learningpage> {
     );
   }
 
+  Container _emptyList(){
+    return Container(
+      padding: EdgeInsets.all(Global.appPadding),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Lottie.network(
+            "https://assets3.lottiefiles.com/private_files/lf30_bn5winlb.json",
+          ),
+          Container(
+              margin: EdgeInsets.only(top: Global.appMargin),
+              child: Text(
+                "Keine Kategorien vorhanden...\nLege welche mithilfe des '+' an",
+                textAlign: TextAlign.center,
+              )),
+        ],
+      ),
+    );
+  }
+
   Widget _bodyBuilder(BuildContext context) {
     if(CachingService.cachedLearningCategories!.isNotEmpty){
-      return _bodyContent(CachingService.cachedLearningCategories!);
+      if(CachingService.cachedLearningCategories!.isNotEmpty){
+        return _bodyContent(CachingService.cachedLearningCategories!);
+      }
+      else{
+        return _emptyList();
+      }
     } else {
       return Material(
         color: Colors.white,
@@ -90,23 +118,7 @@ class _LearningpageState extends State<Learningpage> {
               if (snapshot.data!.length >= 1) {
                 return _bodyContent(snapshot.data!);
               } else {
-                return Container(
-                  padding: EdgeInsets.all(Global.appPadding),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Lottie.network(
-                        "https://assets3.lottiefiles.com/private_files/lf30_bn5winlb.json",
-                      ),
-                      Container(
-                          margin: EdgeInsets.only(top: Global.appMargin),
-                          child: Text(
-                            "Keine Kategorien vorhanden...\nLege welche mithilfe des '+' an",
-                          )),
-                    ],
-                  ),
-                );
+                return _emptyList();
               }
             }
           },
