@@ -4,6 +4,7 @@ import 'package:seriousfocus/bloc/learning_category_editing_model.dart';
 import 'package:seriousfocus/bloc/learning_category_model.dart';
 import 'package:seriousfocus/bloc/learning_flashcard_model.dart';
 import 'package:seriousfocus/pages/learning/add_flashcard_partial.dart';
+import 'package:seriousfocus/service/caching_service.dart';
 import 'package:seriousfocus/service/learning_firebase_service.dart';
 import 'package:seriousfocus/widgets/global/seriousfocus_popupmenuitem.dart';
 import 'package:seriousfocus/widgets/global/seriousfocus_scaffold.dart';
@@ -57,6 +58,40 @@ class _LearningCategoryPageState extends State<LearningCategoryPage> {
   }
 
   //Widgtes
+  List<Widget> _actions(BuildContext context) {
+    return <Widget>[
+      Consumer<LearningEditingModel>(builder: (context, model, _) {
+        return Visibility(
+          visible: model.selectedFlashcards.length >= 1,
+          child: PopupMenuButton(
+            tooltip: "Optionen",
+            icon: Icon(Icons.more_vert),
+            itemBuilder: (BuildContext ctx) => <PopupMenuEntry>[
+              SeriousFocusPopup().actionItem(
+                context,
+                title: "Verschieben",
+                icon: Icons.move_to_inbox,
+                onTap: () => LearningMoveToCategory(ctx)
+                    .moveToCategory(model.selectedFlashcards, _refreshPage),
+              ),
+              SeriousFocusPopup().actionItem(
+                context,
+                title: "Löschen",
+                icon: Icons.delete,
+                onTap: () async {
+                  await LearningService()
+                      .deleteFlashcard(model.selectedFlashcards);
+                  model.resetSelectedFlashcards();
+                  _refreshPage();
+                },
+              ),
+            ],
+          ),
+        );
+      }),
+    ];
+  }
+
   GridView _listBody(List<LearningFlashcardModel> flashcards){
     return GridView.builder(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -78,75 +113,48 @@ class _LearningCategoryPageState extends State<LearningCategoryPage> {
     );
   }
 
-  Widget _body(){
-    return FutureBuilder<List<LearningFlashcardModel>>(
-      future: LearningService().getAllFlashcardsForCategory(widget.model.documentID!),
-      builder: (BuildContext context, AsyncSnapshot<List<LearningFlashcardModel>> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: CircularProgressIndicator(
-              color: Theme.of(context).primaryColor,
-            ),
-          );
-        } else if (snapshot.hasError) {
-          return Center(
-            child: Text(snapshot.error.toString()),
-          );
-        }
-        else{
-          if(snapshot.data!.isEmpty){
+  Widget _bodyBuilder(){
+    if (CachingService.cachedFlashcardsContains(widget.model.documentID!)) {
+      return _listBody(CachingService.getFlashcardListWithKey(widget.model.documentID!)); 
+    } else {
+      return FutureBuilder<List<LearningFlashcardModel>>(
+        future: LearningService().getAllFlashcardsForCategory(widget.model.documentID!),
+        builder: (BuildContext context, AsyncSnapshot<List<LearningFlashcardModel>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
-              child: Text("Keine Karteikarten in ${widget.model.name} vorhanden."),
-            ); 
+              child: CircularProgressIndicator(
+                color: Theme.of(context).primaryColor,
+              ),
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text(snapshot.error.toString()),
+            );
           }
           else{
-            return _listBody(snapshot.data!);
+            if(snapshot.data!.isEmpty){
+              return Center(
+                child: Text("Keine Karteikarten in ${widget.model.name} vorhanden."),
+              ); 
+            }
+            else{
+              CachingService.addLearningFlashcardList(widget.model.documentID!, snapshot.data!);
+              return _listBody(snapshot.data!);
+            }
           }
-        }
-      },
-    );
+        },
+      );
+    }
   }
 
-  List<Widget> _actions(BuildContext context){
-    return <Widget>[
-      Consumer<LearningEditingModel>(
-        builder: (context, model, _){
-          return Visibility(
-            visible: model.selectedFlashcards.length >= 1,
-            child: PopupMenuButton(
-              tooltip: "Optionen",
-              icon: Icon(Icons.more_vert),
-              itemBuilder: (BuildContext ctx) => <PopupMenuEntry>[
-                SeriousFocusPopup().actionItem(
-                  context,
-                  title: "Verschieben",
-                  icon: Icons.move_to_inbox,
-                  onTap: () => LearningMoveToCategory(ctx).moveToCategory(model.selectedFlashcards, _refreshPage),
-                ),
-                SeriousFocusPopup().actionItem(
-                  context,
-                  title: "Löschen",
-                  icon: Icons.delete,
-                  onTap: () async {
-                    await LearningService().deleteFlashcard(model.selectedFlashcards);
-                    model.resetSelectedFlashcards();
-                    _refreshPage();
-                  },
-                ),
-              ],
-            ),
-          );
-        }
-      ),
-    ];
-  }
+  
 
   @override
   Widget build(BuildContext context) {
     return SeriousFocusScaffold(
       title: widget.model.name,
       showAppBar: true,
-      body: _body(),
+      body: _bodyBuilder(),
       actions: _actions(context),
       fab: LearningcategoryMenu(
         onNewPressed: () => _newFlashcard(context),

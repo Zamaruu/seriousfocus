@@ -5,14 +5,25 @@ class CachingService {
   static int? _learningCacheLimit;
   static List<LearningCategoryModel>? cachedLearningCategories;
   static Map<String, List<LearningFlashcardModel>>? _cachedLearningFlashcards;
-  static Map<String, List<LearningFlashcardModel>>? get cachedLearningFlashcards => _cachedLearningFlashcards;
 
   //Methods
+  //General
   ///Initializes the Cache. Must be called in main() Method!
   static void initializeSfCache({required int learningCacheLimit,}){
     _learningCacheLimit = learningCacheLimit;
     cachedLearningCategories = <LearningCategoryModel>[];
     _cachedLearningFlashcards = <String, List<LearningFlashcardModel>>{};
+  }
+
+  //-------------------------------------------------------------------
+
+  //Learning Cache Section
+  static bool cachedFlashcardsContains(String key){
+    return _cachedLearningFlashcards!.containsKey(key);
+  }
+
+  static List<LearningFlashcardModel> getFlashcardListWithKey(String key){
+    return _cachedLearningFlashcards![key]!;
   }
 
   ///Caches a LearningFlashcardList, if Cache is full, the first Cached Element will be removed and the new List will be pushed on the Map-Stack
