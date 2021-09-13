@@ -7,10 +7,14 @@ import 'package:provider/provider.dart';
 import 'package:seriousfocus/service/authentication_service.dart';
 import 'package:seriousfocus/pages/authentication/loginpage.dart';
 import 'package:seriousfocus/pages/mainnavigationpage.dart';
+import 'package:seriousfocus/service/caching_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  CachingService.initializeSfCache(
+    learningCacheLimit: 15,
+  );
 
   runApp(SeriousFocusBase());
 }

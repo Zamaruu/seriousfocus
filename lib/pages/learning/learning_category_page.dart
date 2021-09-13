@@ -9,6 +9,7 @@ import 'package:seriousfocus/widgets/global/seriousfocus_popupmenuitem.dart';
 import 'package:seriousfocus/widgets/global/seriousfocus_scaffold.dart';
 import 'package:seriousfocus/widgets/learning/learning_category_fab.dart';
 import 'package:seriousfocus/widgets/learning/learning_flashcard_card.dart';
+import 'package:seriousfocus/widgets/learning/learning_flipcard.dart';
 import 'package:seriousfocus/widgets/learning/learning_move_to_category.dart';
 import 'package:side_sheet/side_sheet.dart';
 
@@ -67,6 +68,11 @@ class _LearningCategoryPageState extends State<LearningCategoryPage> {
           model: flashcards[index], 
           categoryColor: widget.model.categoryColor,
           refreshCallback: _refreshPage,
+          onTap: () => Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => LearningFlipcard(model: flashcards[index])
+            )
+          ),
         );
       },
     );

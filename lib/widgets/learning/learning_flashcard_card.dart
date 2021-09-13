@@ -13,13 +13,15 @@ class LearningFlashcardCard extends StatelessWidget {
   final Color categoryColor;
   final double height;
   final Function refreshCallback;
+  final Function onTap;
 
   const LearningFlashcardCard({
     Key? key,
     required this.model, 
     required this.categoryColor, 
     required this.refreshCallback,
-    this.height = 200.0,
+    required this.onTap,
+    this.height = 200.0, 
   }) : super(key: key);
 
   //Methods
@@ -100,7 +102,7 @@ class LearningFlashcardCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(Global.borderRadius / 2),
         elevation: 4,
         child: InkWell(
-          onTap: (){},
+          onTap: () => onTap(),
           splashColor: categoryColor.withOpacity(0.3),
           child: Container(
             decoration: BoxDecoration(
