@@ -8,6 +8,10 @@ class LearningService {
   late String _uid;
   String get uid => _uid;
   final String _collection = "FlashCards";
+  // ignore: non_constant_identifier_names
+  final String MY_CATEGORIES = "myCategories";
+  // ignore: non_constant_identifier_names
+  final String MY_FLASHCARDS = "myFlashcards";
 
   LearningService(){
     _uid = FirebaseAuth.instance.currentUser!.uid;
@@ -21,7 +25,7 @@ class LearningService {
     late Map<String, dynamic> data;
     
     //Get all categories
-    QuerySnapshot result = await FirebaseFirestore.instance.collection(_collection).doc(_uid).collection("myCategories").get();
+    QuerySnapshot result = await FirebaseFirestore.instance.collection(_collection).doc(_uid).collection(MY_CATEGORIES).get();
     
     for (DocumentSnapshot doc in result.docs) {
       data = doc.data() as Map<String, dynamic>;
@@ -42,7 +46,7 @@ class LearningService {
     var res = await FirebaseFirestore.instance
       .collection(_collection)
       .doc(_uid)
-      .collection("myCategories")
+      .collection(MY_CATEGORIES)
       .add(model.toMap());
     print(res);
   }
@@ -51,7 +55,7 @@ class LearningService {
     await FirebaseFirestore.instance
       .collection(_collection)
       .doc(_uid)
-      .collection("myCategories")
+      .collection(MY_CATEGORIES)
       .doc(model.documentID)
       .update(model.toMap());
   }
@@ -60,7 +64,7 @@ class LearningService {
     await FirebaseFirestore.instance
       .collection(_collection)
       .doc(_uid)
-      .collection("myCategories")
+      .collection(MY_CATEGORIES)
       .doc(categoryID)
       .delete();
   }
@@ -72,7 +76,7 @@ class LearningService {
     QuerySnapshot result = await FirebaseFirestore.instance
         .collection(_collection)
         .doc(_uid)
-        .collection("myFlashcards")
+        .collection(MY_FLASHCARDS)
         .where("categoryid", isEqualTo: categoryID.trim())
         .get();
 
@@ -91,7 +95,7 @@ class LearningService {
     QuerySnapshot result = await FirebaseFirestore.instance
       .collection(_collection)
       .doc(_uid)
-      .collection("myFlashcards")
+      .collection(MY_FLASHCARDS)
       .where("categoryid", isEqualTo: categoryID.trim())
       .get();
 
@@ -102,7 +106,7 @@ class LearningService {
     var res = await FirebaseFirestore.instance
       .collection(_collection)
       .doc(_uid)
-      .collection("myFlashcards")
+      .collection(MY_FLASHCARDS)
       .add(model.toMap());
     print(res);
   }
@@ -116,7 +120,7 @@ class LearningService {
       await FirebaseFirestore.instance
         .collection(_collection)
         .doc(_uid)
-        .collection("myFlashcards")
+        .collection(MY_FLASHCARDS)
         .doc(id)
         .delete();
     }
@@ -127,7 +131,7 @@ class LearningService {
       await FirebaseFirestore.instance
         .collection(_collection)
         .doc(_uid)
-        .collection("myFlashcards")
+        .collection(MY_FLASHCARDS)
         .doc(id)
         .update({
           "categoryid": categoryID,
@@ -135,7 +139,26 @@ class LearningService {
     }
   }
 
-  setFashcardsLearningStatus(){
+  Future<LearningFlashcardModel> setFashcardsLearningStatus(String documentID, int newStatus) async {
+    await FirebaseFirestore.instance
+      .collection(_collection)
+      .doc(_uid)
+      .collection(MY_FLASHCARDS)
+      .doc(documentID)
+      .update({
+        "status": newStatus,
+      });
 
+    var updatedRawResult = await FirebaseFirestore.instance
+      .collection(_collection)
+      .doc(_uid)
+      .collection(MY_FLASHCARDS)
+      .doc(documentID)
+      .get();
+    
+    var rawJson = updatedRawResult.data() as Map<String, dynamic>;
+    rawJson["id"] = updatedRawResult.id;
+
+    return LearningFlashcardModel.fromJson(rawJson);
   }
 }

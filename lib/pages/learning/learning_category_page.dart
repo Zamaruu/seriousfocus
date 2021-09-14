@@ -44,6 +44,7 @@ class _LearningCategoryPageState extends State<LearningCategoryPage> {
   //Methods
   Future<void> _refreshPage() async {
     setState(() {
+      CachingService.removeFlashcardsFromCache(widget.model.documentID!);
     });
   }
 
@@ -92,28 +93,31 @@ class _LearningCategoryPageState extends State<LearningCategoryPage> {
     ];
   }
 
-  GridView _listBody(List<LearningFlashcardModel> flashcards){
-    return GridView.builder(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
+  RefreshIndicator _listBody(List<LearningFlashcardModel> flashcards){
+    return RefreshIndicator(
+      onRefresh: _refreshPage,
+      child: GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+        ),
+        itemCount: flashcards.length,
+        itemBuilder: (BuildContext context, int index) {
+          return LearningFlashcardCard(
+            model: flashcards[index], 
+            categoryColor: widget.model.categoryColor,
+            refreshCallback: _refreshPage,
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => LearningFlashcards(
+                  categoryName: widget.model.name, 
+                  flashcards: flashcards,
+                  initialFlashCard: flashcards[index],
+                ),
+              )
+            ),
+          );
+        },
       ),
-      itemCount: flashcards.length,
-      itemBuilder: (BuildContext context, int index) {
-        return LearningFlashcardCard(
-          model: flashcards[index], 
-          categoryColor: widget.model.categoryColor,
-          refreshCallback: _refreshPage,
-          onTap: () => Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => LearningFlashcards(
-                categoryName: widget.model.name, 
-                flashcards: flashcards,
-                initialFlashCard: flashcards[index],
-              ),
-            )
-          ),
-        );
-      },
     );
   }
 

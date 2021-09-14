@@ -22,6 +22,10 @@ class CachingService {
     return _cachedLearningFlashcards!.containsKey(key);
   }
 
+  static void removeFlashcardsFromCache(String key){
+    _cachedLearningFlashcards!.remove(key);
+  }
+
   static List<LearningFlashcardModel> getFlashcardListWithKey(String key){
     return _cachedLearningFlashcards![key]!;
   }

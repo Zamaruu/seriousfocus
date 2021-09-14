@@ -47,6 +47,7 @@ dependencies:
   side_sheet: ^1.0.0
   circular_menu: ^1.2.3
   top_snackbar_flutter: ^1.0.0
+  card_swiper: ^1.0.4
 
 dev_dependencies:
   flutter_test:

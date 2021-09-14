@@ -10,6 +10,7 @@ class LearningFlashcardModel {
   late String _answer;
   String get answer => _answer;
   late int? _status;
+  ///Can be 0, 1 or 2. 0 => bad, 1 => meh, 2 => good
   int? get status => _status;
 
   //Constructor
