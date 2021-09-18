@@ -67,24 +67,33 @@ class _LearningCategoryPageState extends State<LearningCategoryPage> {
           child: PopupMenuButton(
             tooltip: "Optionen",
             icon: Icon(Icons.more_vert),
+            onSelected: (selected){
+              switch (selected) {
+                case 0:
+                  LearningMoveToCategory(context).moveToCategory(model.selectedFlashcards, _refreshPage);
+                  break;
+                case 1:
+                  LearningService().deleteFlashcard(model.selectedFlashcards).then((value){
+                    model.resetSelectedFlashcards();
+                    _refreshPage();
+                  });
+                  break;
+                default:
+                  break;
+              }
+            },
             itemBuilder: (BuildContext ctx) => <PopupMenuEntry>[
               SeriousFocusPopup().actionItem(
                 context,
+                0,
                 title: "Verschieben",
                 icon: Icons.move_to_inbox,
-                onTap: () => LearningMoveToCategory(ctx)
-                    .moveToCategory(model.selectedFlashcards, _refreshPage),
               ),
               SeriousFocusPopup().actionItem(
                 context,
+                1,
                 title: "Löschen",
                 icon: Icons.delete,
-                onTap: () async {
-                  await LearningService()
-                      .deleteFlashcard(model.selectedFlashcards);
-                  model.resetSelectedFlashcards();
-                  _refreshPage();
-                },
               ),
             ],
           ),

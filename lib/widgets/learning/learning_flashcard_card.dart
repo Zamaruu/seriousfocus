@@ -42,7 +42,7 @@ class LearningFlashcardCard extends StatelessWidget {
 
   //Widgtes
 
-  Row _actions(BuildContext context){
+  Row _actions(BuildContext ctx){
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -64,24 +64,38 @@ class LearningFlashcardCard extends StatelessWidget {
         PopupMenuButton(
           tooltip: "Optionen",
           icon: Icon(Icons.more_vert),
+          onSelected: (selected){
+            switch (selected) {
+              case 0:
+                break;
+              case 1:
+                LearningMoveToCategory(ctx).moveToCategory([model.documentID!], refreshCallback);
+                break;
+              case 2:
+                LearningService().deleteFlashcard([model.documentID!]);
+                break;
+              default:
+                break;
+            }
+          },
           itemBuilder: (BuildContext context) => <PopupMenuEntry>[
             SeriousFocusPopup().actionItem(
               context, 
+              0,
               title: "Bearbeiten", 
               icon: Icons.edit, 
-              onTap: (){},
             ),
             SeriousFocusPopup().actionItem(
               context,
+              1,
               title: "Verschieben",
               icon: Icons.move_to_inbox,
-               onTap: () => LearningMoveToCategory(context).moveToCategory([model.documentID!], refreshCallback),
             ),
             SeriousFocusPopup().actionItem(
               context,
+              2,
               title: "Löschen",
               icon: Icons.delete,
-              onTap: () => LearningService().deleteFlashcard([model.documentID!]),
             ),
           ],
         ),

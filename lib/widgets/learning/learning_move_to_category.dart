@@ -13,7 +13,7 @@ class LearningMoveToCategory {
   }
 
   void moveToCategory(List<String> selectedFlashcards, Function refreshCallback) {
-    showBottomSheet(
+    showModalBottomSheet(
       context: ctx,
       builder: (context) {
         return Material(

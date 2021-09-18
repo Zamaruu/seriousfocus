@@ -1,30 +1,24 @@
 import 'package:flutter/material.dart';
 
 class SeriousFocusPopup {
-  PopupMenuItem actionItem(BuildContext context,
+  PopupMenuItem actionItem(BuildContext context, int value,
       {required String title,
-      required IconData icon,
-      required Function onTap}) {
+      required IconData icon,}) {
     return PopupMenuItem(
-      child: GestureDetector(
-        onTap: () async {
-          await onTap();
-          Navigator.of(context).pop();
-        },
-        child: Row(
-          children: [
-            Container(
-              child: Icon(
-                icon,
-                color: Theme.of(context).primaryColor,
-              ),
+      value: value,
+      child: Row(
+        children: [
+          Container(
+            child: Icon(
+              icon,
+              color: Theme.of(context).primaryColor,
             ),
-            SizedBox(
-              width: 10,
-            ),
-            Text(title),
-          ],
-        ),
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          Text(title),
+        ],
       ),
     );
   }
