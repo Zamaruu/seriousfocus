@@ -4,6 +4,7 @@ import 'package:seriousfocus/bloc/learning_category_editing_model.dart';
 import 'package:seriousfocus/bloc/learning_category_model.dart';
 import 'package:seriousfocus/bloc/learning_flashcard_model.dart';
 import 'package:seriousfocus/pages/learning/add_flashcard_partial.dart';
+import 'package:seriousfocus/pages/learning/edit_flashcard_page.dart';
 import 'package:seriousfocus/pages/learning/learning_flashcards.dart';
 import 'package:seriousfocus/service/caching_service.dart';
 import 'package:seriousfocus/service/learning_firebase_service.dart';
@@ -49,13 +50,23 @@ class _LearningCategoryPageState extends State<LearningCategoryPage> {
   }
 
   void _newFlashcard(BuildContext context){
-    SideSheet.right(
-      context: context,
-      body: AddFlashCardPage(
-        refreshCallback: _refreshPage,
-        categoryID: widget.model.documentID!,
+    Navigator.push(
+      context, 
+      MaterialPageRoute(
+        builder: (context) => EditFlashcardPage(
+          refreshCallback: _refreshPage,
+          categoryID: widget.model.documentID!,
+        ), 
+        fullscreenDialog: true
       ),
     );
+    // SideSheet.right(
+    //   context: context,
+    //   body: AddFlashCardPage(
+    //     refreshCallback: _refreshPage,
+    //     categoryID: widget.model.documentID!,
+    //   ),
+    // );
   }
 
   //Widgtes

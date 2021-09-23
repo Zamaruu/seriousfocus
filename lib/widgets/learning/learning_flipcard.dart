@@ -1,9 +1,12 @@
+import 'dart:convert';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:seriousfocus/bloc/learning_flashcard_model.dart';
 import 'package:seriousfocus/globals.dart';
 import 'package:seriousfocus/widgets/global/seriousfocus_scaffold.dart';
+import 'package:flutter_quill/flutter_quill.dart' as Quill;
 import 'dart:math' as math;
 
 class LearningFlipcard extends StatelessWidget {
@@ -60,15 +63,14 @@ class LearningFlipcard extends StatelessWidget {
       child: Stack(
         children: [
           Center(
-            child: Text(
-              content,
-              textAlign: TextAlign.center,
+            child: Html(
+              data: content
             ),
           ),
           Transform.rotate(
             angle: -math.pi / 6,
             child: _getIconBasedOnStatus(),
-          )
+          ),
         ],
       ),
     );
@@ -82,8 +84,8 @@ class LearningFlipcard extends StatelessWidget {
           margin: EdgeInsets.all(10),
           child: FlipCard(
             direction: FlipDirection.HORIZONTAL, // default
-            front: _body(model.question, context), 
-            back: _body(model.answer, context), 
+            front: _body(Global.quillDocumentJsonToHtml(model.question), context), 
+            back: _body(Global.quillDocumentJsonToHtml(model.answer), context), 
           ),
         ),
       ),

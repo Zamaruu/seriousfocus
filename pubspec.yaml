@@ -48,7 +48,10 @@ dependencies:
   circular_menu: ^1.2.3
   top_snackbar_flutter: ^1.0.0
   card_swiper: ^1.0.4
-  flutter_quill: ^2.0.5
+  flutter_quill: ^2.0.4
+  delta_markdown: ^0.3.0
+  markdown: ^4.0.0
+  flutter_html: ^2.1.2
 
 dev_dependencies:
   flutter_test:

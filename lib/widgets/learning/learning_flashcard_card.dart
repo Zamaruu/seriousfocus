@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
 import 'package:seriousfocus/bloc/learning_category_editing_model.dart';
 import 'package:seriousfocus/bloc/learning_flashcard_model.dart';
@@ -137,12 +138,10 @@ class LearningFlashcardCard extends StatelessWidget {
                   height: height - 20,
                   child: Stack(
                     children: [
-                      Center(
-                        child: Text(
-                          model.question,
-                          maxLines: 3,
-                          textAlign: TextAlign.center,
-                          overflow: TextOverflow.ellipsis,
+                      Align(
+                        alignment: Alignment.center,
+                        child: Html(
+                          data: Global.quillDocumentJsonToHtml(model.question),
                         ),
                       ),
                       _actions(context),

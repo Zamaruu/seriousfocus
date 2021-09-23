@@ -1,6 +1,11 @@
 
 
+import 'dart:convert';
+import 'package:delta_markdown/delta_markdown.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_quill/flutter_quill.dart' as Quill;
+import 'package:flutter_quill/models/quill_delta.dart';
+import 'package:markdown/markdown.dart' as Markdown;
 import 'package:seriousfocus/widgets/global/seriousfocus_textbutton.dart';
 
 class Global {
@@ -9,6 +14,15 @@ class Global {
   static double splashRadius = 22.5;
   static double borderRadius = 10.0;
   static double listviewBottomSpace = 50.0;
+
+  static String quillDocumentJsonToHtml(String deltajson) {
+    Delta delta = Quill.Document.fromJson(jsonDecode(deltajson)).toDelta();
+    final convertedValue = jsonEncode(delta);
+    final markdown = deltaToMarkdown(convertedValue);
+    final html = Markdown.markdownToHtml(markdown);
+
+    return html;
+  }
 
   static Future<void> seriousFocusAlert(BuildContext context, {required Function onPressed, required String title, required String content, required String onPressedText, bool success = false}){
     return showDialog(

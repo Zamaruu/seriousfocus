@@ -68,15 +68,6 @@ class _AddFlashcardPageState extends State<AddFlashCardPage> {
           icon: Icons.create,
           text: "Erstellen",
           onPressed: () async {
-            LearningService().createNewFlashcard(
-              new LearningFlashcardModel.edit(
-                "",
-                _questionController.text.trim(), 
-                _answerController.text.trim(), 
-                widget.categoryID, 
-                0,
-              ),
-            );
             widget.refreshCallback();
             Navigator.of(context).pop();
           },
